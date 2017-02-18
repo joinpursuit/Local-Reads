@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="473" id="KGk-i7-Jjw" customClass="PostTableViewCell" customModule="LocalReads" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="473"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="472"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sampleBook1" translatesAutoresizingMaskIntoConstraints="NO" id="zkO-rc-Z53">
+                        <rect key="frame" x="16" y="45" width="128" height="206"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="zkO-rc-Z53" secondAttribute="height" multiplier="128: 206" id="J1Z-Cm-1Y8"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3yf-AJ-oGD">
+                        <rect key="frame" x="16" y="16" width="304" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BookTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="548-HB-yWS">
+                        <rect key="frame" x="152" y="45" width="152" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="752" text="BookAuthor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JkJ-1n-8hJ">
+                        <rect key="frame" x="152" y="74" width="152" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jAq-PR-YwM">
+                        <rect key="frame" x="152" y="230" width="152" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="UserComment" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVS-IE-aZh">
+                        <rect key="frame" x="16" y="259" width="288" height="197"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="5vW-mY-4WI">
+                        <rect key="frame" x="70" y="138" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </activityIndicatorView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="3yf-AJ-oGD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="8" id="389-ql-Xje"/>
+                    <constraint firstItem="548-HB-yWS" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="81H-e7-cKg"/>
+                    <constraint firstItem="zkO-rc-Z53" firstAttribute="top" secondItem="3yf-AJ-oGD" secondAttribute="bottom" constant="8" id="B4l-wF-GeQ"/>
+                    <constraint firstItem="EVS-IE-aZh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="FXa-pY-yjS"/>
+                    <constraint firstItem="JkJ-1n-8hJ" firstAttribute="top" secondItem="548-HB-yWS" secondAttribute="bottom" constant="8" id="GKl-pQ-Sc4"/>
+                    <constraint firstItem="zkO-rc-Z53" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.4" id="HGq-5U-jam"/>
+                    <constraint firstItem="3yf-AJ-oGD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="QnO-jm-CvK"/>
+                    <constraint firstItem="zkO-rc-Z53" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="U0t-nI-BgY"/>
+                    <constraint firstItem="jAq-PR-YwM" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="U65-1j-U8a"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="EVS-IE-aZh" secondAttribute="trailing" constant="8" id="c8n-H6-k9U"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="jAq-PR-YwM" secondAttribute="trailing" constant="8" id="cqF-oL-nZK"/>
+                    <constraint firstItem="3yf-AJ-oGD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="eht-aX-ZFG"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="548-HB-yWS" secondAttribute="trailing" constant="8" id="fzo-xn-wyG"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="EVS-IE-aZh" secondAttribute="bottom" constant="8" id="iWh-Ih-uJ6"/>
+                    <constraint firstItem="jAq-PR-YwM" firstAttribute="bottom" secondItem="zkO-rc-Z53" secondAttribute="bottom" id="rAk-B0-q1T"/>
+                    <constraint firstItem="EVS-IE-aZh" firstAttribute="top" secondItem="zkO-rc-Z53" secondAttribute="bottom" constant="8" id="tLn-KP-ioZ"/>
+                    <constraint firstItem="548-HB-yWS" firstAttribute="top" secondItem="zkO-rc-Z53" secondAttribute="top" id="tzw-w4-5Fy"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="JkJ-1n-8hJ" secondAttribute="trailing" constant="8" id="xbm-ZO-OJL"/>
+                    <constraint firstItem="JkJ-1n-8hJ" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="zCP-52-RRe"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="bookAuthorLabel" destination="JkJ-1n-8hJ" id="XXn-dn-b3n"/>
+                <outlet property="bookCoverImageView" destination="zkO-rc-Z53" id="VbL-Qg-PNA"/>
+                <outlet property="bookTitileLabel" destination="548-HB-yWS" id="i8Q-BE-iBw"/>
+                <outlet property="coverLoadActivityIndicator" destination="5vW-mY-4WI" id="FhG-j8-LhN"/>
+                <outlet property="userCommentLabel" destination="EVS-IE-aZh" id="TgH-bs-5Uk"/>
+                <outlet property="userRatingLabel" destination="jAq-PR-YwM" id="xRE-EY-X2v"/>
+                <outlet property="usernameLabel" destination="3yf-AJ-oGD" id="qP6-ms-74h"/>
+            </connections>
+            <point key="canvasLocation" x="33" y="275.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="sampleBook1" width="128" height="206"/>
+    </resources>
+</document>

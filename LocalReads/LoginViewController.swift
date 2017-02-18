@@ -36,10 +36,11 @@ class LoginViewController: UIViewController {
     
     func loginTapped(){
         print("Log in")
-        if let username = usernameTextField.text,
-            let password = passwordTextField.text{
-            loginCurrentUser(username: username, password: password)
-        }
+//        if let username = usernameTextField.text,
+//            let password = passwordTextField.text{
+//            loginCurrentUser(username: username, password: password)
+//        }
+        self.successfullyLogin()
     }
     
     func loginCurrentUser(username: String, password: String){
