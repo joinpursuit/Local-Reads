@@ -12,6 +12,8 @@ import Firebase
 
 class LoginViewController: UIViewController {
     
+    static var currentUser: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -46,11 +48,28 @@ class LoginViewController: UIViewController {
     
     func loginTapped(){
         print("Log in")
-//        if let username = usernameTextField.text,
-//            let password = passwordTextField.text{
-//            loginCurrentUser(username: username, password: password)
-//        }
-        self.successfullyLogin()
+        if let username = usernameTextField.text,
+            let password = passwordTextField.text{
+            loginCurrentUser(username: username, password: password)
+        }
+    }
+    
+    func updateCurrentUser(id: String){
+        let reference = FIRDatabase.database().reference().child("users")
+        
+        reference.child(id).observe(.value, with: { (snapshot) in
+            if let snap = snapshot.value as? NSDictionary,
+                let email = snap["email"] as? String,
+                let name = snap["name"] as? String,
+                let profileImage = snap["profileImage"] as? String,
+                let currentLibrary = snap["currentLibrary"] as? String {
+                
+                LoginViewController.currentUser = User(email: email, name: name, profileImage: profileImage, currentLibrary: currentLibrary)
+                
+            }else{
+                print("error parsing current user")
+            }
+        })
     }
     
     func loginCurrentUser(username: String, password: String){
@@ -61,6 +80,8 @@ class LoginViewController: UIViewController {
             }
             if user != nil {
                 print("SUCCESS.... \(user!.uid)")
+                
+                self.updateCurrentUser(id: user!.uid)
                 self.successfullyLogin()
             } else {
                 self.showOKAlert(title: "Error", message: error?.localizedDescription)
@@ -213,7 +234,7 @@ class LoginViewController: UIViewController {
         button.layer.borderWidth = 2.0
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.layer.borderColor = UIColor.black.cgColor
-        button.addTarget(self, action: #selector(successfullyLogin), for: .touchUpInside)
+        button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
         return button
     }()
     

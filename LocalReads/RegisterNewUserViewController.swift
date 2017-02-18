@@ -69,7 +69,7 @@ class RegisterNewUserViewController: UIViewController {
     
     func configureConstraints(){
         backButton.snp.makeConstraints { (view) in
-            view.top.leading.equalToSuperview().offset(20)
+            view.top.leading.equalToSuperview().offset(30)
         }
         profileImageview.snp.makeConstraints { (view) in
             view.centerX.equalToSuperview()

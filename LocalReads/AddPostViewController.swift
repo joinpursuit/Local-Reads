@@ -77,9 +77,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             ]
             
         }
-        
-        
-        //databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
+//        databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
     }
     
     
