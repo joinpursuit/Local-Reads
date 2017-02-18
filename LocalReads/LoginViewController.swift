@@ -10,10 +10,13 @@ import UIKit
 import SnapKit
 import Firebase
 
-class LoginViewController: UIViewController, RegisterDelegate {
+class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        usernameTextField.text = "demo@haha.com"
+        passwordTextField.text = "000000"
         
         setupViewHierarchy()
         configureConstraints()
@@ -32,6 +35,7 @@ class LoginViewController: UIViewController, RegisterDelegate {
         containerView.addSubview(loginButton)
         self.view.addSubview(resetPasswordButton)
         self.view.addSubview(registerButton)
+        self.view.addSubview(memoLabel)
     }
     
     func gotoRegisterView(){
@@ -135,6 +139,11 @@ class LoginViewController: UIViewController, RegisterDelegate {
             view.top.equalTo(containerView.snp.bottom).offset(10)
         }
         
+        memoLabel.snp.makeConstraints { (view) in
+            view.leading.trailing.equalToSuperview()
+            view.bottom.equalToSuperview().offset(-80)
+        }
+        
     }
     
     //MARK: - Helper func
@@ -143,12 +152,6 @@ class LoginViewController: UIViewController, RegisterDelegate {
         let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(ok)
         self.present(alert, animated: true, completion: completion)
-    }
-    
-    func returnFromRegister(username: String, password: String) {
-        self.usernameTextField.text = username
-        self.passwordTextField.text = password
-        self.loginTapped()
     }
     
     //MARK: - Lazy Inits
@@ -183,6 +186,8 @@ class LoginViewController: UIViewController, RegisterDelegate {
         field.placeholder = "Username"
         field.font = UIFont.systemFont(ofSize: 18)
         field.layer.borderWidth = 1.0
+        field.autocorrectionType = .no
+        field.autocapitalizationType = .none
         field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
@@ -192,6 +197,9 @@ class LoginViewController: UIViewController, RegisterDelegate {
         field.placeholder = "Password"
         field.font = UIFont.systemFont(ofSize: 18)
         field.layer.borderWidth = 1.0
+        field.isSecureTextEntry = true
+        field.autocorrectionType = .no
+        field.autocapitalizationType = .none
         field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
@@ -226,9 +234,14 @@ class LoginViewController: UIViewController, RegisterDelegate {
         button.addTarget(self, action: #selector(gotoRegisterView), for: .touchUpInside)
         return button
     }()
-}
-
-protocol RegisterDelegate {
-    func returnFromRegister(username: String, password: String)
+    
+    lazy var memoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Let's read together."
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        return label
+    }()
 }
 
