@@ -17,6 +17,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var bookTitileLabel: UILabel!
   
     @IBOutlet weak var bookAuthorLabel: UILabel!
+    
+    @IBOutlet weak var libraryNameLabel: UILabel!
+    
     @IBOutlet weak var userRatingLabel: UILabel!
     @IBOutlet weak var userCommentLabel: UILabel!
     

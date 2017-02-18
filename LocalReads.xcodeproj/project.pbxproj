@@ -30,6 +30,7 @@
 		DE09F69E1E58B424003DBC7C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69D1E58B424003DBC7C /* Post.swift */; };
 		DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */; };
 		DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */; };
+		DE09F6A71E58EBEA003DBC7C /* LibraryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		DE09F69D1E58B424003DBC7C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
+		DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryFilterViewController.swift; sourceTree = "<group>"; };
 		FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,9 +140,8 @@
 				066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */,
 				066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */,
 				066CCDE21E58B3C400D51267 /* FeedViewController.swift */,
+				DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */,
 				066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */,
-				3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */,
-				3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */,
 				066CCDE01E58B3B500D51267 /* ProfileViewController.swift */,
 			);
 			name = "View Controllers";
@@ -167,6 +168,8 @@
 			children = (
 				DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */,
 				DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */,
+				3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */,
+				3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */,
 			);
 			name = Views/Cells;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
 				066CCDE71E58D02C00D51267 /* RegisterNewUserViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
+				DE09F6A71E58EBEA003DBC7C /* LibraryFilterViewController.swift in Sources */,
 				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
 				DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */,
 				066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */,
