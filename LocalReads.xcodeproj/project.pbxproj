@@ -24,6 +24,7 @@
 		DE09F6951E586CA2003DBC7C /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6941E586CA2003DBC7C /* Library.swift */; };
 		DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6971E586CED003DBC7C /* APIManager.swift */; };
 		DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */; };
+		DE09F69E1E58B424003DBC7C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69D1E58B424003DBC7C /* Post.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		DE09F6941E586CA2003DBC7C /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DE09F6971E586CED003DBC7C /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
+		DE09F69D1E58B424003DBC7C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				DE09F68F1E586C5E003DBC7C /* Book.swift */,
 				DE09F6911E586C71003DBC7C /* User.swift */,
 				DE09F6941E586CA2003DBC7C /* Library.swift */,
+				DE09F69D1E58B424003DBC7C /* Post.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -282,6 +285,7 @@
 				DE09F6921E586C71003DBC7C /* User.swift in Sources */,
 				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
+				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
 				DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */,
 				066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */,
 				DE09F6951E586CA2003DBC7C /* Library.swift in Sources */,
