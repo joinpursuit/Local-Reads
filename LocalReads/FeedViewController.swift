@@ -15,26 +15,39 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     var posts: [Post] = []
     
+    static var libraryToFilterBy: Library?
+    
     var databaseReference: FIRDatabaseReference!
-
+    
+    var resultsTitle = "All Queens Libraries"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .yellow
         self.databaseReference = FIRDatabase.database().reference().child("posts")
         
+        setNavBar()
         setupViews()
         setConstraints()
-        
         fetchPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("....library....")
+        dump(FeedViewController.libraryToFilterBy)
         
+        if let library = FeedViewController.libraryToFilterBy {
+            self.posts = self.posts.filter { $0.libraryName == library.name }
+            tableView.reloadData()
+        }
     }
     
     // MARK: - Setup
+    
+    func setNavBar() {
+        let filterButton = UIBarButtonItem(title: "Library Filter", style: .done, target: self, action: #selector(libraryFilterTapped))
+        self.navigationItem.rightBarButtonItem = filterButton
+    }
     
     func setupViews() {
         self.view.addSubview(tableView)
@@ -90,6 +103,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         cell.usernameLabel.text = post.username
         cell.bookTitileLabel.text = post.bookTitle
         cell.bookAuthorLabel.text = post.bookAuthor
+        cell.libraryNameLabel.text = post.libraryName
         cell.userRatingLabel.text = String(post.userRating)
         cell.userCommentLabel.text = post.userComment
         cell.bookCoverImageView.image = nil
@@ -100,10 +114,19 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 DispatchQueue.main.async {
                     cell.bookCoverImageView.image = UIImage(data: data)
                     cell.coverLoadActivityIndicator.stopAnimating()
+                    cell.setNeedsLayout()
                 }
             }
         }
         return cell
+    }
+    
+    
+    // Actions
+    
+    func libraryFilterTapped() {
+        let libraryVC = LibraryFilterViewController()
+        navigationController?.pushViewController(libraryVC, animated: true)
     }
     
     
