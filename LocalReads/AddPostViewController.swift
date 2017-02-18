@@ -17,7 +17,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     var bookNibName = "BookCollectionViewCell"
     var apiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
     var selectedBook: Book!
-    var currentUser: User!
     
     //Will Attempt To Get Stars System
     var ratingTextView: UITextView!
@@ -36,6 +35,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.addSubview(searchBar)
         self.view.addSubview(booksCollectionView)
         self.view.addSubview(commentSection)
+        self.view.addSubview(ratingSegment)
         
         let button = UIButton()
         button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
@@ -63,21 +63,33 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
-        
+        ratingSegment.snp.makeConstraints { (view) in
+            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
+            view.leading.equalToSuperview().offset(8.0)
+            view.width.equalTo(150.0)
+        }
     }
     
     func didTapUpload() {
+        
+        guard selectedBook != nil else { return print("Pick a book bruh") }
+        
         let databaseRef = FIRDatabase.database().reference()
         print(123)
-        if let currentUser = FIRAuth.auth()?.currentUser{
+        let key = databaseRef.childByAutoId()
+        
+        if let currentUser = LoginViewController.currentUser {
             let values = ["bookTitle" : selectedBook.title,
                           "author" : selectedBook.author,
                           "coverArt" : selectedBook.thumbNail,
-                          "userName" :
+                          "userName" : currentUser.name,
+                          "key" : key.key,
+                          "userComment" : commentSection.text!,
+                          "userRating" : String(describing: ratingSegment.selectedSegmentIndex + 1)
             ]
-            
+            databaseRef.child("posts").child(key.key).updateChildValues(values)
         }
-//        databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
+        commentSection.text = ""
     }
     
     
@@ -115,9 +127,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         let nib = UINib(nibName: bookNibName, bundle:nil)
         booksCollectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
         booksCollectionView.backgroundColor = UIColor.gray
-        
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -158,6 +167,12 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
 
     //MARK: - Lazy Inits
+    
+    lazy var ratingSegment: UISegmentedControl = {
+       let view = UISegmentedControl(items: ["1","2","3","4","5"])
+       view.selectedSegmentIndex = 4
+       return view
+    }()
 
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
