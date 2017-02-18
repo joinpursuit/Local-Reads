@@ -7,29 +7,111 @@
 //
 
 import UIKit
+import SnapKit
+import FirebaseDatabase
 
-class FeedViewController: UIViewController {
+
+class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var posts: [Post] = []
+    
+    var databaseReference: FIRDatabaseReference!
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.view.backgroundColor = .yellow
+        self.databaseReference = FIRDatabase.database().reference().child("posts")
+        
+        setupViews()
+        setConstraints()
+        
+        fetchPosts()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
-    */
+    
+    // MARK: - Setup
+    
+    func setupViews() {
+        self.view.addSubview(tableView)
+        self.tableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifyer")
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.estimatedRowHeight = 200
+        self.tableView.rowHeight = UITableViewAutomaticDimension
 
+    }
+    
+    
+    func setConstraints() {
+        self.edgesForExtendedLayout = []
+        tableView.snp.makeConstraints { (view) in
+            view.top.bottom.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    
+    // MARK: - Posts 
+    
+    func fetchPosts() {
+        databaseReference.observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+            var fetchedPosts: [Post] = []
+            for child in snapshot.children {
+                if let snap = child as? FIRDataSnapshot, let valueDict = snap.value as? [String: AnyObject] {
+                    
+                    if let post = Post(from: valueDict, key: snap.key) {
+                        fetchedPosts.append(post)
+                    }
+                }
+            }
+            // chronological order
+            self.posts = fetchedPosts.reversed()
+            self.tableView.reloadData()
+        })
+    }
+    
+    
+    
+    //MARK: - Tableview delegates/datasource
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return posts.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifyer", for: indexPath) as! PostTableViewCell
+        
+        let post = posts[indexPath.row]
+        
+        cell.usernameLabel.text = post.username
+        cell.bookTitileLabel.text = post.bookTitle
+        cell.bookAuthorLabel.text = post.bookAuthor
+        cell.userRatingLabel.text = String(post.userRating)
+        cell.userCommentLabel.text = post.userComment
+        cell.bookCoverImageView.image = nil
+        cell.coverLoadActivityIndicator.hidesWhenStopped = true
+        cell.coverLoadActivityIndicator.startAnimating()
+        APIRequestManager.manager.getData(endPoint: post.bookImageURL) { (data) in
+            if let data = data {
+                DispatchQueue.main.async {
+                    cell.bookCoverImageView.image = UIImage(data: data)
+                    cell.coverLoadActivityIndicator.stopAnimating()
+                }
+            }
+        }
+        return cell
+    }
+    
+    
+    
+    lazy var tableView: UITableView = {
+        let view = UITableView()
+        return view
+    }()
+
+    
 }
