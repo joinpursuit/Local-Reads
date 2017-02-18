@@ -12,6 +12,7 @@
 		066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE01E58B3B500D51267 /* ProfileViewController.swift */; };
 		066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE21E58B3C400D51267 /* FeedViewController.swift */; };
 		066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */; };
+		066CCDE71E58D02C00D51267 /* RegisterNewUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */; };
 		3E287A941E58BE6900512F41 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */; };
 		3E287A971E58DAD400512F41 /* BookCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */; };
 		8FD27E5BA1DA854DBB4DFAAC /* Pods_LocalReads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */; };
@@ -37,6 +38,7 @@
 		066CCDE01E58B3B500D51267 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		066CCDE21E58B3C400D51267 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
+		066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNewUserViewController.swift; sourceTree = "<group>"; };
 		3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
 		3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookCollectionViewCell.xib; sourceTree = "<group>"; };
 		8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocalReads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,6 +136,7 @@
 			children = (
 				DE09F67D1E5864FC003DBC7C /* ViewController.swift */,
 				066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */,
+				066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */,
 				066CCDE21E58B3C400D51267 /* FeedViewController.swift */,
 				066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */,
 				3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */,
@@ -308,6 +311,7 @@
 				DE09F6921E586C71003DBC7C /* User.swift in Sources */,
 				DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */,
 				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
+				066CCDE71E58D02C00D51267 /* RegisterNewUserViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
 				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
 				DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */,
