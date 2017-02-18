@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		066CCDDD1E58A8D700D51267 /* FlowChart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066CCDDC1E58A8D700D51267 /* FlowChart.storyboard */; };
+		066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */; };
+		066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE01E58B3B500D51267 /* ProfileViewController.swift */; };
+		066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE21E58B3C400D51267 /* FeedViewController.swift */; };
+		066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */; };
 		8FD27E5BA1DA854DBB4DFAAC /* Pods_LocalReads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */; };
 		DE09F67C1E5864FC003DBC7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F67B1E5864FC003DBC7C /* AppDelegate.swift */; };
 		DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F67D1E5864FC003DBC7C /* ViewController.swift */; };
@@ -25,6 +29,10 @@
 
 /* Begin PBXFileReference section */
 		066CCDDC1E58A8D700D51267 /* FlowChart.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FlowChart.storyboard; sourceTree = "<group>"; };
+		066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		066CCDE01E58B3B500D51267 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		066CCDE21E58B3C400D51267 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
 		8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocalReads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6E76D9E92A280FDBCBDAE82 /* Pods-LocalReads.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.debug.xcconfig"; sourceTree = "<group>"; };
 		DE09F6781E5864FC003DBC7C /* LocalReads.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalReads.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +124,10 @@
 			isa = PBXGroup;
 			children = (
 				DE09F67D1E5864FC003DBC7C /* ViewController.swift */,
+				066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */,
+				066CCDE21E58B3C400D51267 /* FeedViewController.swift */,
+				066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */,
+				066CCDE01E58B3B500D51267 /* ProfileViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -271,11 +283,15 @@
 			files = (
 				DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */,
 				DE09F6921E586C71003DBC7C /* User.swift in Sources */,
+				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
 				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
 				DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */,
+				066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */,
 				DE09F6951E586CA2003DBC7C /* Library.swift in Sources */,
+				066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */,
 				DE09F67C1E5864FC003DBC7C /* AppDelegate.swift in Sources */,
+				066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */,
 				DE09F6901E586C5E003DBC7C /* Book.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
