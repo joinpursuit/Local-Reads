@@ -11,9 +11,14 @@ import SnapKit
 import Firebase
 
 class LoginViewController: UIViewController {
-
+    
+    static var currentUser: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        usernameTextField.text = "demo@haha.com"
+        passwordTextField.text = "000000"
         
         setupViewHierarchy()
         configureConstraints()
@@ -32,15 +37,39 @@ class LoginViewController: UIViewController {
         containerView.addSubview(loginButton)
         self.view.addSubview(resetPasswordButton)
         self.view.addSubview(registerButton)
+        self.view.addSubview(memoLabel)
+    }
+    
+    func gotoRegisterView(){
+        let view = RegisterNewUserViewController()
+        
+        self.present(view, animated: true, completion: nil)
     }
     
     func loginTapped(){
         print("Log in")
-//        if let username = usernameTextField.text,
-//            let password = passwordTextField.text{
-//            loginCurrentUser(username: username, password: password)
-//        }
-        self.successfullyLogin()
+        if let username = usernameTextField.text,
+            let password = passwordTextField.text{
+            loginCurrentUser(username: username, password: password)
+        }
+    }
+    
+    func updateCurrentUser(id: String){
+        let reference = FIRDatabase.database().reference().child("users")
+        
+        reference.child(id).observe(.value, with: { (snapshot) in
+            if let snap = snapshot.value as? NSDictionary,
+                let email = snap["email"] as? String,
+                let name = snap["name"] as? String,
+                let profileImage = snap["profileImage"] as? String,
+                let currentLibrary = snap["currentLibrary"] as? String {
+                
+                LoginViewController.currentUser = User(email: email, name: name, profileImage: profileImage, currentLibrary: currentLibrary)
+                
+            }else{
+                print("error parsing current user")
+            }
+        })
     }
     
     func loginCurrentUser(username: String, password: String){
@@ -51,6 +80,8 @@ class LoginViewController: UIViewController {
             }
             if user != nil {
                 print("SUCCESS.... \(user!.uid)")
+                
+                self.updateCurrentUser(id: user!.uid)
                 self.successfullyLogin()
             } else {
                 self.showOKAlert(title: "Error", message: error?.localizedDescription)
@@ -130,6 +161,11 @@ class LoginViewController: UIViewController {
             view.top.equalTo(containerView.snp.bottom).offset(10)
         }
         
+        memoLabel.snp.makeConstraints { (view) in
+            view.leading.trailing.equalToSuperview()
+            view.bottom.equalToSuperview().offset(-80)
+        }
+        
     }
     
     //MARK: - Helper func
@@ -172,6 +208,8 @@ class LoginViewController: UIViewController {
         field.placeholder = "Username"
         field.font = UIFont.systemFont(ofSize: 18)
         field.layer.borderWidth = 1.0
+        field.autocorrectionType = .no
+        field.autocapitalizationType = .none
         field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
@@ -181,6 +219,9 @@ class LoginViewController: UIViewController {
         field.placeholder = "Password"
         field.font = UIFont.systemFont(ofSize: 18)
         field.layer.borderWidth = 1.0
+        field.isSecureTextEntry = true
+        field.autocorrectionType = .no
+        field.autocapitalizationType = .none
         field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
@@ -212,6 +253,17 @@ class LoginViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.setTitleColor(.blue, for: .normal)
         button.setTitle("Register", for: .normal)
+        button.addTarget(self, action: #selector(gotoRegisterView), for: .touchUpInside)
         return button
     }()
+    
+    lazy var memoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Let's read together."
+        label.textColor = .white
+        label.textAlignment = .center
+        label.font = UIFont.boldSystemFont(ofSize: 28)
+        return label
+    }()
 }
+

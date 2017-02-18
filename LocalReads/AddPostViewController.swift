@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseDatabase
 
 class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -15,13 +16,16 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     var reuseIdentifier = "bookCell"
     var bookNibName = "BookCollectionViewCell"
     var apiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
+    var selectedBook: Book!
+    
+    //Will Attempt To Get Stars System
+    var ratingTextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.title = "What Book Have You Read"
         setupViewHierarchy()
         configureConstraints()
-        // Do any additional setup after loading the view.
     }
 
     func setupViewHierarchy(){
@@ -30,19 +34,37 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         createBooksCollectionView()
         self.view.addSubview(searchBar)
         self.view.addSubview(booksCollectionView)
+        self.view.addSubview(commentSection)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "uploadScreen"), style: .plain, target: self, action: #selector(didTapUpload))
+        
     }
     
     func configureConstraints(){
         searchBar.snp.makeConstraints { (view) in
             view.top.equalTo(self.topLayoutGuide.snp.bottom)
             view.leading.trailing.equalToSuperview()
-            //view.height.equalTo(40.0)
         }
         booksCollectionView.snp.makeConstraints { (view) in
             view.top.equalTo(searchBar.snp.bottom).offset(10.0)
             view.leading.trailing.equalToSuperview()
-            view.height.equalTo(175.0)
+            view.height.equalTo(250.0)
         }
+        commentSection.snp.makeConstraints { (view) in
+            view.bottom.equalToSuperview().inset(8.0)
+            view.leading.equalToSuperview().offset(8.0)
+            view.trailing.equalToSuperview().inset(8.0)
+            view.height.equalTo(150.0)
+        }
+    }
+    
+    func didTapUpload() {
+        let databaseRef = FIRDatabase.database().reference()
+        
+//        let values = [
+//        ]
+        
+//        databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
     }
     
     
@@ -59,13 +81,14 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 }
             }
         }
+        searchBar.text = ""
     }
     
     
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 125, height: 175)
+        layout.itemSize = CGSize(width: 150, height: 250)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         layout.scrollDirection = .horizontal
@@ -79,38 +102,60 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         booksCollectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
         booksCollectionView.backgroundColor = UIColor.gray
         
+        
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.booksArray.count
     }
-
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor = .green
+        selectedBook = booksArray[indexPath.row]
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.backgroundColor =  UIColor.clear
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! BookCollectionViewCell
         let aBook = booksArray[indexPath.row]
         
+
         cell.bookImage.image = nil
         
+        cell.bookTitle.text = aBook.title
         APIRequestManager.manager.getData(endPoint: aBook.thumbNail) { (data) in
             if let validData = data {
                 let image = UIImage(data: validData)
-                cell.bookImage.image = image
-                cell.setNeedsLayout()
+                DispatchQueue.main.async {
+                    cell.bookImage.image = image
+                    cell.setNeedsLayout()
+                }
             }
         }
-        
         return cell
     }
-
-
 
     //MARK: - Lazy Inits
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
-        view.showsCancelButton = true
         return view
     }()
-
+    
+    lazy var commentSection: UITextView = {
+        let view = UITextView()
+        view.font = UIFont(name: "Times New Roman", size: 20.0)
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.gray.cgColor
+        return view
+    }()
     
     }
