@@ -213,7 +213,7 @@ class LoginViewController: UIViewController {
         button.layer.borderWidth = 2.0
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         button.layer.borderColor = UIColor.black.cgColor
-        button.addTarget(self, action: #selector(loginTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(successfullyLogin), for: .touchUpInside)
         return button
     }()
     
