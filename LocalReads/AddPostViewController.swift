@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 
 class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -17,6 +17,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     var bookNibName = "BookCollectionViewCell"
     var apiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
     var selectedBook: Book!
+    var currentUser: User!
     
     //Will Attempt To Get Stars System
     var ratingTextView: UITextView!
@@ -36,8 +37,14 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.addSubview(booksCollectionView)
         self.view.addSubview(commentSection)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "uploadScreen"), style: .plain, target: self, action: #selector(didTapUpload))
-        
+        let button = UIButton()
+        button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
+        button.snp.makeConstraints { (view) in
+                        view.width.height.equalTo(35.0)
+                  }
+        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
+        let navButton = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItem = navButton
     }
     
     func configureConstraints(){
@@ -56,15 +63,23 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
+        
     }
     
     func didTapUpload() {
         let databaseRef = FIRDatabase.database().reference()
+        print(123)
+        if let currentUser = FIRAuth.auth()?.currentUser{
+            let values = ["bookTitle" : selectedBook.title,
+                          "author" : selectedBook.author,
+                          "coverArt" : selectedBook.thumbNail,
+                          "userName" :
+            ]
+            
+        }
         
-//        let values = [
-//        ]
         
-        databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
+        //databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
     }
     
     
@@ -82,6 +97,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             }
         }
         searchBar.text = ""
+        commentSection.text = ""
     }
     
     
@@ -144,6 +160,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
 
     //MARK: - Lazy Inits
+
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
