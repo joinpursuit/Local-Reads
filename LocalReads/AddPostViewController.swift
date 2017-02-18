@@ -28,7 +28,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.backgroundColor = .white
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         createBooksCollectionView()
-        
         self.view.addSubview(searchBar)
         self.view.addSubview(booksCollectionView)
     }
@@ -46,7 +45,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
     }
     
-  
+    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let newUrl = (self.apiEndpoint + searchBar.text!).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -63,9 +62,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
     
     
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-    }
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -81,7 +77,8 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         booksCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         let nib = UINib(nibName: bookNibName, bundle:nil)
         booksCollectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
-        booksCollectionView.backgroundColor = .white
+        booksCollectionView.backgroundColor = UIColor.gray
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
