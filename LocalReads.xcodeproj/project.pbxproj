@@ -27,6 +27,8 @@
 		DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6971E586CED003DBC7C /* APIManager.swift */; };
 		DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */; };
 		DE09F69E1E58B424003DBC7C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69D1E58B424003DBC7C /* Post.swift */; };
+		DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */; };
+		DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		DE09F6971E586CED003DBC7C /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
 		DE09F69D1E58B424003DBC7C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 		FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +104,7 @@
 			children = (
 				DE09F6931E586C78003DBC7C /* Model */,
 				DE09F6991E586CF3003DBC7C /* Managers */,
+				DE09F6A11E58BF66003DBC7C /* Views/Cells */,
 				DE09F6961E586CAC003DBC7C /* View Controllers */,
 				DE09F69C1E588442003DBC7C /* Utilities/Extensions */,
 				DE09F67F1E5864FC003DBC7C /* Main.storyboard */,
@@ -152,6 +157,15 @@
 				DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */,
 			);
 			name = Utilities/Extensions;
+			sourceTree = "<group>";
+		};
+		DE09F6A11E58BF66003DBC7C /* Views/Cells */ = {
+			isa = PBXGroup;
+			children = (
+				DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */,
+				DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */,
+			);
+			name = Views/Cells;
 			sourceTree = "<group>";
 		};
 		E6775B9C786B405DD10DCF57 /* Frameworks */ = {
@@ -228,6 +242,7 @@
 				3E287A951E58BE6900512F41 /* BookCollectionViewCell.xib in Resources */,
 				DE09F6861E5864FC003DBC7C /* LaunchScreen.storyboard in Resources */,
 				DE09F68E1E586728003DBC7C /* GoogleService-Info.plist in Resources */,
+				DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */,
 				DE09F6831E5864FC003DBC7C /* Assets.xcassets in Resources */,
 				DE09F6811E5864FC003DBC7C /* Main.storyboard in Resources */,
 			);
@@ -291,6 +306,7 @@
 				DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */,
 				3E287A941E58BE6900512F41 /* BookCollectionViewCell.swift in Sources */,
 				DE09F6921E586C71003DBC7C /* User.swift in Sources */,
+				DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */,
 				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
 				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
