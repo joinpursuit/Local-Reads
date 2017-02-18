@@ -10,8 +10,8 @@ import UIKit
 import SnapKit
 import Firebase
 
-class LoginViewController: UIViewController {
-
+class LoginViewController: UIViewController, RegisterDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,6 +32,12 @@ class LoginViewController: UIViewController {
         containerView.addSubview(loginButton)
         self.view.addSubview(resetPasswordButton)
         self.view.addSubview(registerButton)
+    }
+    
+    func gotoRegisterView(){
+        let view = RegisterNewUserViewController()
+        
+        self.present(view, animated: true, completion: nil)
     }
     
     func loginTapped(){
@@ -139,6 +145,12 @@ class LoginViewController: UIViewController {
         self.present(alert, animated: true, completion: completion)
     }
     
+    func returnFromRegister(username: String, password: String) {
+        self.usernameTextField.text = username
+        self.passwordTextField.text = password
+        self.loginTapped()
+    }
+    
     //MARK: - Lazy Inits
     lazy var BGImageView: UIImageView = {
         let view = UIImageView()
@@ -211,6 +223,12 @@ class LoginViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
         button.setTitleColor(.blue, for: .normal)
         button.setTitle("Register", for: .normal)
+        button.addTarget(self, action: #selector(gotoRegisterView), for: .touchUpInside)
         return button
     }()
 }
+
+protocol RegisterDelegate {
+    func returnFromRegister(username: String, password: String)
+}
+
