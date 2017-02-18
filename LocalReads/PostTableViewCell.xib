@@ -61,6 +61,12 @@
                         <rect key="frame" x="70" y="138" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Library Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zvw-WI-tbA">
+                        <rect key="frame" x="152" y="201" width="152" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="3yf-AJ-oGD" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" constant="8" id="389-ql-Xje"/>
@@ -72,6 +78,7 @@
                     <constraint firstItem="3yf-AJ-oGD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="QnO-jm-CvK"/>
                     <constraint firstItem="zkO-rc-Z53" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="U0t-nI-BgY"/>
                     <constraint firstItem="jAq-PR-YwM" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="U65-1j-U8a"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Zvw-WI-tbA" secondAttribute="trailing" constant="8" id="XKv-FV-Ioz"/>
                     <constraint firstAttribute="trailingMargin" secondItem="EVS-IE-aZh" secondAttribute="trailing" constant="8" id="c8n-H6-k9U"/>
                     <constraint firstAttribute="trailingMargin" secondItem="jAq-PR-YwM" secondAttribute="trailing" constant="8" id="cqF-oL-nZK"/>
                     <constraint firstItem="3yf-AJ-oGD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="eht-aX-ZFG"/>
@@ -79,7 +86,9 @@
                     <constraint firstAttribute="bottomMargin" secondItem="EVS-IE-aZh" secondAttribute="bottom" constant="8" id="iWh-Ih-uJ6"/>
                     <constraint firstItem="jAq-PR-YwM" firstAttribute="bottom" secondItem="zkO-rc-Z53" secondAttribute="bottom" id="rAk-B0-q1T"/>
                     <constraint firstItem="EVS-IE-aZh" firstAttribute="top" secondItem="zkO-rc-Z53" secondAttribute="bottom" constant="8" id="tLn-KP-ioZ"/>
+                    <constraint firstItem="Zvw-WI-tbA" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="tca-LT-AjB"/>
                     <constraint firstItem="548-HB-yWS" firstAttribute="top" secondItem="zkO-rc-Z53" secondAttribute="top" id="tzw-w4-5Fy"/>
+                    <constraint firstItem="jAq-PR-YwM" firstAttribute="top" secondItem="Zvw-WI-tbA" secondAttribute="bottom" constant="8" id="x4M-RK-GIm"/>
                     <constraint firstAttribute="trailingMargin" secondItem="JkJ-1n-8hJ" secondAttribute="trailing" constant="8" id="xbm-ZO-OJL"/>
                     <constraint firstItem="JkJ-1n-8hJ" firstAttribute="leading" secondItem="zkO-rc-Z53" secondAttribute="trailing" constant="8" id="zCP-52-RRe"/>
                 </constraints>
@@ -89,6 +98,7 @@
                 <outlet property="bookCoverImageView" destination="zkO-rc-Z53" id="VbL-Qg-PNA"/>
                 <outlet property="bookTitileLabel" destination="548-HB-yWS" id="i8Q-BE-iBw"/>
                 <outlet property="coverLoadActivityIndicator" destination="5vW-mY-4WI" id="FhG-j8-LhN"/>
+                <outlet property="libraryNameLabel" destination="Zvw-WI-tbA" id="iIJ-Rf-hsW"/>
                 <outlet property="userCommentLabel" destination="EVS-IE-aZh" id="TgH-bs-5Uk"/>
                 <outlet property="userRatingLabel" destination="jAq-PR-YwM" id="xRE-EY-X2v"/>
                 <outlet property="usernameLabel" destination="3yf-AJ-oGD" id="qP6-ms-74h"/>
