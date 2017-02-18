@@ -25,6 +25,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         setupViews()
         setConstraints()
+        
+        fetchPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,13 +79,30 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: - Tableview delegates/datasource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2//posts.count
+        return posts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifyer", for: indexPath) as! PostTableViewCell
         
+        let post = posts[indexPath.row]
         
+        cell.usernameLabel.text = post.username
+        cell.bookTitileLabel.text = post.bookTitle
+        cell.bookAuthorLabel.text = post.bookAuthor
+        cell.userRatingLabel.text = String(post.userRating)
+        cell.userCommentLabel.text = post.userComment
+        cell.bookCoverImageView.image = nil
+        cell.coverLoadActivityIndicator.hidesWhenStopped = true
+        cell.coverLoadActivityIndicator.startAnimating()
+        APIRequestManager.manager.getData(endPoint: post.bookImageURL) { (data) in
+            if let data = data {
+                DispatchQueue.main.async {
+                    cell.bookCoverImageView.image = UIImage(data: data)
+                    cell.coverLoadActivityIndicator.stopAnimating()
+                }
+            }
+        }
         return cell
     }
     

@@ -21,6 +21,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var userCommentLabel: UILabel!
     
     
+    @IBOutlet weak var coverLoadActivityIndicator: UIActivityIndicatorView!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
