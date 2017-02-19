@@ -173,6 +173,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             sender.layer.transform = CATransform3DMakeAffineTransform(originalTransform)
         })
         
+        present(AddPostViewController(), animated: true, completion: nil)
         
     }
     

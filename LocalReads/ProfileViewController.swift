@@ -233,7 +233,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     lazy var profileImageView: UIImageView = {
         let view = UIImageView()
         view.image = #imageLiteral(resourceName: "user_icon")
-        view.backgroundColor = UIColor.lrPrimary()
+        view.backgroundColor = ColorManager.shared.primaryLight
         view.clipsToBounds = true
         view.layer.cornerRadius = 88
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))

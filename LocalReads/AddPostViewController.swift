@@ -166,10 +166,11 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 if error != nil {
                     print(error!)
                 } else {
-                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
-                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alert.addAction(ok)
-                self.present(alert, animated: true, completion: nil)
+//                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
+//                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+//                alert.addAction(ok)
+//                self.present(alert, animated: true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                 }
             })
         }
