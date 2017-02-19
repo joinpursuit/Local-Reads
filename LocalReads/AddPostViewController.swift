@@ -55,7 +55,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         booksCollectionView.snp.makeConstraints { (view) in
             view.top.equalTo(searchBar.snp.bottom).offset(10.0)
             view.leading.trailing.equalToSuperview()
-            view.height.equalTo(250.0)
+            view.height.equalTo(330.0)
         }
         commentSection.snp.makeConstraints { (view) in
             view.bottom.equalToSuperview().inset(8.0)
@@ -80,13 +80,14 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         
         if let currentUser = LoginViewController.currentUser {
             let values = ["bookTitle" : selectedBook.title,
-                          "author" : selectedBook.author,
-                          "coverArt" : selectedBook.thumbNail,
+                          "bookAuthor" : selectedBook.author,
+                          "bookImageURL" : selectedBook.thumbNail,
                           "userName" : currentUser.name,
                           "key" : key.key,
                           "userComment" : commentSection.text!,
-                          "userRating" : String(describing: ratingSegment.selectedSegmentIndex + 1)
-            ]
+                          "userRating" : ratingSegment.selectedSegmentIndex + 1,
+                          "libraryName" : currentUser.currentLibrary
+            ] as [String : Any]
             databaseRef.child("posts").child(key.key).updateChildValues(values)
         }
         commentSection.text = ""
@@ -110,13 +111,23 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         commentSection.text = ""
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == booksCollectionView {
+            
+            for _ in booksCollectionView.visibleCells {
+                let indexPath = self.booksCollectionView.indexPathsForVisibleItems
+                booksCollectionView.scrollToItem(at: indexPath[1], at: .centeredHorizontally, animated: false)
+            }
+        }
+
+    }
     
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 250)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
+        layout.itemSize = CGSize(width: 230, height: 330)
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 10
         layout.scrollDirection = .horizontal
         
         booksCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
@@ -138,6 +149,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.backgroundColor = .green
         selectedBook = booksArray[indexPath.row]
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         
     }
     
@@ -167,6 +179,8 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
 
     //MARK: - Lazy Inits
+    
+    
     
     lazy var ratingSegment: UISegmentedControl = {
        let view = UISegmentedControl(items: ["1","2","3","4","5"])
