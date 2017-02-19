@@ -86,15 +86,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                           "bookAuthor" : selectedBook.author,
                           "bookImageURL" : selectedBook.thumbNail,
                           "userName" : currentUser.name,
+                          "userID" : FIRAuth.auth()!.currentUser!.uid,
                           "key" : key.key,
                           "userComment" : commentSection.text!,
-
                           "userRating" : Int(starRating.rating),
                           "libraryName" : currentUser.currentLibrary
             ] as [String : Any]
             databaseRef.child("posts").child(key.key).updateChildValues(values, withCompletionBlock: { (error: Error?, reference: FIRDatabaseReference?) in
                 if error != nil {
-                    print(error)
+                    print(error!)
                 } else {
                 let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
                 let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -106,8 +106,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         commentSection.text = ""
         starRating.rating = 1.0
     }
-    
-    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let newUrl = (self.apiEndpoint + searchBar.text!).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -181,6 +179,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         cell.bookImage.image = nil
         
         cell.bookTitle.text = aBook.title
+        
+        if aBook.thumbNail == "" {
+            cell.bookImage.image = #imageLiteral(resourceName: "missingbook")
+        } else {
         APIRequestManager.manager.getData(endPoint: aBook.thumbNail) { (data) in
             if let validData = data {
                 let image = UIImage(data: validData)
@@ -188,6 +190,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                     cell.bookImage.image = image
                     cell.setNeedsLayout()
                 }
+            }
             }
         }
         return cell

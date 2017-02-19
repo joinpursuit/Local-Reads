@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import FirebaseDatabase
+import FirebaseStorage
 
 
 class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -33,8 +34,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("....library....")
-        dump(FeedViewController.libraryToFilterBy)
         
         if let library = FeedViewController.libraryToFilterBy {
             self.posts = self.posts.filter { $0.libraryName == library.name }
@@ -120,6 +119,20 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
         }
+        cell.userProfileImageView.image = nil
+        let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
+        let spaceRef = storageReference.child("profileImages/\(post.userID)")
+        
+        spaceRef.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+            if let error = error {
+                print(error)
+            } else {
+                let image = UIImage(data: data!)
+                cell.userProfileImageView.image = image
+            }
+        }
+
+        
         return cell
     }
     
@@ -128,6 +141,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func libraryFilterTapped() {
         let libraryVC = LibraryFilterViewController()
+        libraryVC.viewStyle = .fromFeed
         navigationController?.pushViewController(libraryVC, animated: true)
     }
     
