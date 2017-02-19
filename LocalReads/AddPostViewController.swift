@@ -32,7 +32,9 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.navigationItem.title = "What Book Have You Read"
         setupViewHierarchy()
         configureConstraints()
-    
+        if booksArray.count == 0 {
+            noResultsLabel.isHidden = false
+        }
            }
     
     private func registerForKeyboardNotifications() {
@@ -60,12 +62,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             var rect = self.view.frame
             
             rect.size.height -= keyboardSize.height
-//
-//            if let field = activeField {
-//                if !rect.contains(field.frame.origin) {
-//                    scrollView.scrollRectToVisible(field.frame, animated: true)
-//                }
-//            }
         }
     }
     
@@ -76,32 +72,24 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
 
 
     func setupViewHierarchy(){
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = ColorManager.shared.primaryLight
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         createBooksCollectionView()
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(otherView)
         self.otherView.addSubview(searchBar)
         self.otherView.addSubview(booksCollectionView)
+        self.otherView.addSubview(noResultsLabel)
         self.otherView.addSubview(starRating)
         self.otherView.addSubview(commentSection)
-        self.commentSection.addSubview(uploadButton)
-
+        self.otherView.addSubview(floatingButton)
         
         scrollView.isScrollEnabled = true
         scrollView.contentSize = otherView.frame.size
         scrollView.keyboardDismissMode = .interactive
         
         setTextView()
-        let button = UIButton()
-        button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
-        button.snp.makeConstraints { (view) in
-            view.width.height.equalTo(35.0)
-        }
-        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
         
-        let navButton = UIBarButtonItem(customView: button)
-        self.navigationItem.rightBarButtonItem = navButton
     }
     
     func configureConstraints(){
@@ -130,6 +118,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.height.equalTo(330.0)
         }
         
+        noResultsLabel.snp.makeConstraints { (view) in
+            view.trailing.leading.top.bottom.equalTo(booksCollectionView)
+        }
+        
         starRating.snp.makeConstraints { (view) in
             view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
             view.width.equalToSuperview()
@@ -144,9 +136,11 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.height.equalTo(150.0)
         }
         
-        uploadButton.snp.makeConstraints { (view) in
-            view.centerX.centerY.equalToSuperview()
-     }
+        floatingButton.snp.makeConstraints { (view) in
+            view.width.height.equalTo(54)
+            view.trailing.bottom.equalToSuperview().offset(-20)
+        }
+
     }
     
     
@@ -189,8 +183,13 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         APIRequestManager.manager.getData(endPoint: newUrl!) { (data) in
             if let validData = data,
                 let validBooks = Book.parseBooks(from: validData) {
-                self.booksArray = validBooks
                 DispatchQueue.main.async {
+                    self.booksArray = validBooks
+                    if self.booksArray.isEmpty {
+                        self.noResultsLabel.isHidden = false
+                    } else {
+                        self.noResultsLabel.isHidden = true
+                    }
                 self.booksCollectionView.reloadData()
                 self.booksCollectionView.contentOffset.x = 0
                }
@@ -211,10 +210,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
     }
     
-    
-    
-    
-    
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 230, height: 330)
@@ -229,7 +224,8 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         booksCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         let nib = UINib(nibName: bookNibName, bundle:nil)
         booksCollectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
-        booksCollectionView.backgroundColor = UIColor.gray
+        booksCollectionView.backgroundColor = ColorManager.shared.primaryLight
+
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -239,7 +235,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
-        cell?.backgroundColor = .green
+        cell?.backgroundColor = ColorManager.shared.accent
         selectedBook = booksArray[indexPath.row]
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         
@@ -312,16 +308,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         view.didFinishTouchingCosmos = { (rating) in
          print(rating)
         }
-        view.settings.filledColor = UIColor.orange
-        view.settings.emptyBorderColor = UIColor.orange
-        view.settings.filledBorderColor = UIColor.orange
+        view.settings.filledColor = ColorManager.shared.accent
+        view.settings.emptyBorderColor = ColorManager.shared.accent
+        view.settings.filledBorderColor = ColorManager.shared.accent
         return view
     }()
     
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
-        view.showsCancelButton = true
         return view
     }()
     
@@ -332,6 +327,32 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         view.layer.borderColor = UIColor.gray.cgColor
         return view
     }()
+    
+    internal lazy var floatingButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
+        button.setImage(UIImage(named: "plus_symbol")!, for: .normal)
+        button.backgroundColor = ColorManager.shared.accent
+        button.layer.cornerRadius = 26
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.8
+        button.layer.shadowOffset = CGSize(width: 0, height: 5)
+        button.layer.shadowRadius = 5
+        button.clipsToBounds = false
+        return button
+    }()
+    
+    lazy var noResultsLabel: UILabel = {
+        let view = UILabel()
+        view.numberOfLines = 2
+        view.backgroundColor = ColorManager.shared.primary
+        view.text = "Search for a book to share\n in the search bar above."
+        view.textColor = .white
+        view.textAlignment = .center
+        view.isHidden = true
+        return view
+    }()
+
     
     lazy var uploadButton: UIButton = {
     let button = UIButton()

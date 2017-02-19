@@ -27,7 +27,7 @@ class Book {
         if let bookInfo = dictionary["volumeInfo"] as? [String: Any] {
             
             let title = bookInfo["title"] as! String
-            let publishedDate = bookInfo["publishedDate"] as! String
+            let publishedDate = bookInfo["publishedDate"] as? String ?? "No Date"
             let authorsArray = bookInfo["authors"] as? [String]
             let author = authorsArray?[0] ?? ""
             let thumbNailDict = bookInfo["imageLinks"] as? [String: String] ?? ["thumbnail":""]
