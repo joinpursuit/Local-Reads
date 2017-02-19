@@ -93,7 +93,7 @@ class LoginViewController: UIViewController {
     func successfullyLogin(){
         let feedViewController = UINavigationController(rootViewController: FeedViewController())
         let addPostViewController = UINavigationController(rootViewController: AddPostViewController())
-        let profileViewController = ProfileViewController()
+        let profileViewController = UINavigationController(rootViewController: ProfileViewController())
         
         let feedBarItem = UITabBarItem(title: "Feed", image: nil, selectedImage: nil)
         let addBarItem = UITabBarItem(title: "Add", image: nil, selectedImage: nil)
