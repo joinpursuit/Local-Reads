@@ -104,8 +104,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         starRating.rating = 1.0
     }
     
-    
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let newUrl = (self.apiEndpoint + searchBar.text!).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
