@@ -34,18 +34,14 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if let library = FeedViewController.libraryToFilterBy {
-            self.posts = self.posts.filter { $0.libraryName == library.name }
-            tableView.reloadData()
-        } else {
-            fetchPosts()
-        }
+        fetchPosts()
     }
     
     // MARK: - Setup
     
     func setNavBar() {
+        self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
+
         let filterButton = UIBarButtonItem(title: "Library Filter", style: .done, target: self, action: #selector(libraryFilterTapped))
         self.navigationItem.rightBarButtonItem = filterButton
     }
@@ -53,6 +49,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func setupViews() {
         self.view.addSubview(tableView)
         self.tableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifyer")
+        self.tableView.addSubview(self.refreshControl)
+        self.tableView.backgroundColor = ColorManager.shared.primaryLight
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 200
@@ -83,7 +81,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 }
             }
             // chronological order
-            self.posts = fetchedPosts.reversed()
+            if let library = FeedViewController.libraryToFilterBy {
+                self.posts = self.posts.filter { $0.libraryName == library.name }.reversed()
+            } else {
+                self.posts = fetchedPosts.reversed()
+            }
             self.tableView.reloadData()
         })
     }
@@ -103,9 +105,9 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         cell.usernameLabel.text = post.userName
         cell.bookTitileLabel.text = post.bookTitle
-        cell.bookAuthorLabel.text = post.bookAuthor
-        cell.libraryNameLabel.text = post.libraryName
-        cell.userRatingLabel.text = String(post.userRating)
+        cell.bookAuthorLabel.text = "by: \(post.bookAuthor)"
+        cell.libraryNameLabel.text = "Library:  \(post.libraryName)"
+        cell.rating(post.userRating)
         cell.userCommentLabel.text = post.userComment
         cell.bookCoverImageView.image = nil
         cell.coverLoadActivityIndicator.hidesWhenStopped = true
@@ -145,11 +147,25 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         navigationController?.pushViewController(libraryVC, animated: true)
     }
     
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+        
+        fetchPosts()
+        refreshControl.endRefreshing()
+    }
+    
+    // Lazy vars
     
     
     lazy var tableView: UITableView = {
         let view = UITableView()
         return view
+    }()
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(self.handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        
+        return refreshControl
     }()
     
     
