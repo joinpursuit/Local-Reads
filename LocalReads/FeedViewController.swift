@@ -47,6 +47,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func setupViews() {
+        
         self.view.addSubview(tableView)
         self.tableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "postCellIdentifyer")
         self.tableView.addSubview(self.refreshControl)
@@ -55,6 +56,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        self.view.addSubview(floatingButton)
 
     }
     
@@ -63,6 +66,11 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.edgesForExtendedLayout = []
         tableView.snp.makeConstraints { (view) in
             view.top.bottom.leading.trailing.equalToSuperview()
+        }
+        
+        floatingButton.snp.makeConstraints { (view) in
+            view.width.height.equalTo(54)
+            view.trailing.bottom.equalToSuperview().offset(-20)
         }
     }
     
@@ -102,6 +110,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifyer", for: indexPath) as! PostTableViewCell
         
         let post = posts[indexPath.row]
+        
+        
         
         cell.usernameLabel.text = post.userName
         cell.bookTitileLabel.text = post.bookTitle
@@ -153,8 +163,36 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         refreshControl.endRefreshing()
     }
     
+    func floatingButtonClicked(sender: UIButton) {
+        let newTransform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+        let originalTransform = sender.imageView!.transform
+        
+        UIView.animate(withDuration: 0.1, animations: {
+            sender.layer.transform = CATransform3DMakeAffineTransform(newTransform)
+        }, completion: { (complete) in
+            sender.layer.transform = CATransform3DMakeAffineTransform(originalTransform)
+        })
+        
+        
+    }
+    
     // Lazy vars
     
+    
+    internal lazy var floatingButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(floatingButtonClicked(sender:)), for: UIControlEvents.touchUpInside)
+        button.setImage(UIImage(named: "plus_symbol")!, for: .normal)
+        button.backgroundColor = ColorManager.shared.accent
+        button.layer.cornerRadius = 26
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.8
+        button.layer.shadowOffset = CGSize(width: 0, height: 5)
+        button.layer.shadowRadius = 5
+        button.clipsToBounds = false
+        return button
+    }()
+
     
     lazy var tableView: UITableView = {
         let view = UITableView()
