@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        usernameTextField.text = "demo@haha.com"
+        usernameTextField.text = "demo@hahaha.com"
         passwordTextField.text = "000000"
         
         setupViewHierarchy()
@@ -113,7 +113,7 @@ class LoginViewController: UIViewController {
     func configureConstraints(){
         BGImageView.snp.makeConstraints { (view) in
             view.top.leading.trailing.width.equalToSuperview()
-            view.height.equalToSuperview().multipliedBy(0.45)
+            view.height.equalToSuperview().multipliedBy(0.55)
         }
         
         containerView.snp.makeConstraints { (view) in
@@ -163,7 +163,7 @@ class LoginViewController: UIViewController {
         
         memoLabel.snp.makeConstraints { (view) in
             view.leading.trailing.equalToSuperview()
-            view.bottom.equalToSuperview().offset(-80)
+            view.bottom.equalToSuperview().offset(-50)
         }
         
     }
@@ -199,7 +199,8 @@ class LoginViewController: UIViewController {
     
     lazy var logoImageView: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .red
+        view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "book_icon")
         return view
     }()
     
