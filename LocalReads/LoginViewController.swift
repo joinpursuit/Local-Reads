@@ -55,7 +55,6 @@ class LoginViewController: UIViewController {
     func registerNewUser(type: String){
         let animator = UIViewPropertyAnimator(duration: 0.5, curve: .easeIn, animations: nil)
         
-        logAndRegButton.setTitle(type, for: .normal)
         if modeSwitch.selectedSegmentIndex == 0{
             animator.addAnimations {
                 self.nameTextField.isHidden = true
@@ -98,11 +97,17 @@ class LoginViewController: UIViewController {
             }
         }
         
+        animator.addCompletion { (position) in
+            self.logAndRegButton.setTitle(type, for: .normal)
+        }
+        
         animator.startAnimation()
     }
     
     func iamTapped(){
         print("Log in")
+        animateButton(sender: logAndRegButton)
+        
         switch modeSwitch.selectedSegmentIndex {
         case 0:
             if let username = emailTextField.text,
@@ -130,7 +135,7 @@ class LoginViewController: UIViewController {
                             }
                         })
                         
-                        User.createUserInDatabase(email: email, name: name, profileImage: (user?.uid)!, currentLibrary: "Queens Library", completion: {
+                        User.createUserInDatabase(email: email, name: name, profileImage: (user?.uid)!, currentLibrary: "", completion: {
                             self.loginCurrentUser(username: email, password: password)
                         })
                         
@@ -263,14 +268,14 @@ class LoginViewController: UIViewController {
     }
     
     //MARK: - Helper func
-    func showOKAlert(title: String, message: String?, completion: (() -> Void)? = nil) {
+    internal func showOKAlert(title: String, message: String?, completion: (() -> Void)? = nil) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(ok)
         self.present(alert, animated: true, completion: completion)
     }
     
-    func getRandomImage(completion: @escaping (UIImage?)->Void){
+    internal func getRandomImage(completion: @escaping (UIImage?)->Void){
         let randomNum = Int(arc4random_uniform(9))
         let str = "https://randomuser.me/api/portraits/lego/\(randomNum).jpg"
         APIRequestManager.manager.getData(endPoint: str) { (data) in
@@ -281,6 +286,16 @@ class LoginViewController: UIViewController {
                 completion(nil)
             }
         }
+    }
+    
+    internal func animateButton(sender: UIButton) {
+        let newTransform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        let originalTransform = sender.imageView!.transform
+        UIView.animate(withDuration: 0.1, animations: {
+            sender.layer.transform = CATransform3DMakeAffineTransform(newTransform)
+        }, completion: { (complete) in
+            sender.layer.transform = CATransform3DMakeAffineTransform(originalTransform)
+        })
     }
     
     //MARK: - Lazy Inits
