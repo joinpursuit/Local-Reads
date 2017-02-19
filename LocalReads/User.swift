@@ -45,6 +45,23 @@ class User {
         }
     }
     
-    
+    static func updateUserProfileImage(uid: String, image: UIImage, completion: @escaping ((_ error: Error?) -> Void)){
+        let storageReference = FIRStorage.storage().reference().child("profileImages")
+        
+        let data = UIImageJPEGRepresentation(image, 0.5)
+        
+        let metadata = FIRStorageMetadata()
+        metadata.cacheControl = "public,max-age=300";
+        metadata.contentType = "image/jpeg";
+        
+        let _ = storageReference.child(uid).put(data!, metadata: metadata, completion: { (metadata, error) in
+            guard metadata != nil else {
+                print("put error: failed to store profile image.")
+                completion(error)
+                return
+            }
+        })
+        completion(nil)
+    }
     
 }

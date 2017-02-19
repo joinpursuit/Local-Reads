@@ -53,17 +53,8 @@ class RegisterNewUserViewController: UIViewController {
                         self.successfulRegister(username: email, password: password)
                     })
                     
-                    let data = UIImageJPEGRepresentation(image, 0.5)
-                    
-                    let metadata = FIRStorageMetadata()
-                    metadata.cacheControl = "public,max-age=300";
-                    metadata.contentType = "image/jpeg";
-                    
-                    let _ = self.storageReference.child(user!.uid).put(data!, metadata: metadata, completion: { (metadata, error) in
-                        guard metadata != nil else {
-                            print("put error: failed to store profile image.")
-                            return
-                        }
+                    User.updateUserProfileImage(uid: (user?.uid)!, image: image, completion: { (error) in
+                        //error checking
                     })
                     
                     

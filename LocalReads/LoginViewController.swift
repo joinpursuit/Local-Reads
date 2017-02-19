@@ -165,7 +165,6 @@ class LoginViewController: UIViewController {
             view.leading.trailing.equalToSuperview()
             view.bottom.equalToSuperview().offset(-50)
         }
-        
     }
     
     //MARK: - Helper func
