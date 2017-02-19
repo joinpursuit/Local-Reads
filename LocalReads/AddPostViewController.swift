@@ -107,7 +107,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         
         searchBar.snp.makeConstraints { (view) in
             view.width.equalToSuperview()
-            view.top.equalTo(scrollView.snp.top)
+            view.top.equalTo(scrollView.snp.top).offset(20)
             view.height.equalTo(30)
         }
         
@@ -130,7 +130,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
 
         commentSection.snp.makeConstraints { (view) in
-            view.bottom.equalToSuperview().inset(8.0)
+            view.bottom.equalTo(floatingButton.snp.top).offset(8.0)
             view.leading.equalToSuperview().offset(8.0)
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
@@ -166,11 +166,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 if error != nil {
                     print(error!)
                 } else {
-//                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
-//                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-//                alert.addAction(ok)
-//                self.present(alert, animated: true, completion: nil)
-                    self.dismiss(animated: true, completion: nil)
+                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(ok)
+                self.present(alert, animated: true, completion: nil)
                 }
             })
         }
@@ -364,5 +363,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
     return button
     }()
-        
-}
+
+    
+    }
