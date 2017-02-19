@@ -342,6 +342,5 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
     return button
     }()
-
-    
-    }
+        
+}
