@@ -28,8 +28,8 @@ class Book {
             
             let title = bookInfo["title"] as! String
             let publishedDate = bookInfo["publishedDate"] as! String
-            let authorsArray = bookInfo["authors"] as! [String]
-            let author = authorsArray[0]
+            let authorsArray = bookInfo["authors"] as? [String]
+            let author = authorsArray?[0] ?? ""
             let thumbNailDict = bookInfo["imageLinks"] as? [String: String] ?? ["thumbnail":""]
             let thumbNail = thumbNailDict["thumbnail"]!.replacingOccurrences(of: "http", with: "https")
             
