@@ -37,6 +37,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.addSubview(booksCollectionView)
         self.view.addSubview(commentSection)
         self.view.addSubview(starRating)
+
         
         let button = UIButton()
         button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
@@ -64,6 +65,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
+
         starRating.snp.makeConstraints { (view) in
             view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
             view.leading.equalToSuperview().offset(8.0)
@@ -86,6 +88,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                           "userName" : currentUser.name,
                           "key" : key.key,
                           "userComment" : commentSection.text!,
+
                           "userRating" : Int(starRating.rating),
                           "libraryName" : currentUser.currentLibrary
             ] as [String : Any]
@@ -103,8 +106,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         commentSection.text = ""
         starRating.rating = 1.0
     }
-    
-    
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let newUrl = (self.apiEndpoint + searchBar.text!).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
@@ -178,6 +179,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         cell.bookImage.image = nil
         
         cell.bookTitle.text = aBook.title
+        
+        if aBook.thumbNail == "" {
+            cell.bookImage.image = #imageLiteral(resourceName: "missingbook")
+        } else {
         APIRequestManager.manager.getData(endPoint: aBook.thumbNail) { (data) in
             if let validData = data {
                 let image = UIImage(data: validData)
@@ -186,12 +191,13 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                     cell.setNeedsLayout()
                 }
             }
+            }
         }
         return cell
     }
 
     //MARK: - Lazy Inits
-    
+
     lazy var starRating: CosmosView = {
         let view = CosmosView()
         view.rating = 1.0
