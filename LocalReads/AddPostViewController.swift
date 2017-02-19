@@ -86,9 +86,9 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                           "bookAuthor" : selectedBook.author,
                           "bookImageURL" : selectedBook.thumbNail,
                           "userName" : currentUser.name,
+                          "userID" : FIRAuth.auth()!.currentUser!.uid,
                           "key" : key.key,
                           "userComment" : commentSection.text!,
-
                           "userRating" : Int(starRating.rating),
                           "libraryName" : currentUser.currentLibrary
             ] as [String : Any]

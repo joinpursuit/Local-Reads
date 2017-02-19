@@ -14,6 +14,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     
     @IBOutlet weak var bookCoverImageView: UIImageView!
+    
+    @IBOutlet weak var userProfileImageView: UIImageView!
+    
     @IBOutlet weak var bookTitileLabel: UILabel!
   
     @IBOutlet weak var bookAuthorLabel: UILabel!
@@ -29,7 +32,8 @@ class PostTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        userProfileImageView.layer.cornerRadius = 22
+        userProfileImageView.clipsToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
