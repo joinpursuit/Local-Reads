@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Cosmos
 
 class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -35,7 +36,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.addSubview(searchBar)
         self.view.addSubview(booksCollectionView)
         self.view.addSubview(commentSection)
-        self.view.addSubview(ratingSegment)
+        self.view.addSubview(starRating)
         
         let button = UIButton()
         button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
@@ -63,10 +64,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
-        ratingSegment.snp.makeConstraints { (view) in
+        starRating.snp.makeConstraints { (view) in
             view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
             view.leading.equalToSuperview().offset(8.0)
-            view.width.equalTo(150.0)
+            view.width.equalToSuperview().offset(-8.0)
         }
     }
     
@@ -85,12 +86,22 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                           "userName" : currentUser.name,
                           "key" : key.key,
                           "userComment" : commentSection.text!,
-                          "userRating" : ratingSegment.selectedSegmentIndex + 1,
+                          "userRating" : Int(starRating.rating),
                           "libraryName" : currentUser.currentLibrary
             ] as [String : Any]
-            databaseRef.child("posts").child(key.key).updateChildValues(values)
+            databaseRef.child("posts").child(key.key).updateChildValues(values, withCompletionBlock: { (error: Error?, reference: FIRDatabaseReference?) in
+                if error != nil {
+                    print(error)
+                } else {
+                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
+                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                alert.addAction(ok)
+                self.present(alert, animated: true, completion: nil)
+                }
+            })
         }
         commentSection.text = ""
+        starRating.rating = 1.0
     }
     
     
@@ -103,8 +114,9 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 let validBooks = Book.parseBooks(from: validData) {
                 self.booksArray = validBooks
                 DispatchQueue.main.async {
-                    self.booksCollectionView.reloadData()
-                }
+                self.booksCollectionView.reloadData()
+                self.booksCollectionView.contentOffset.x = 0
+               }
             }
         }
         searchBar.text = ""
@@ -180,14 +192,21 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
 
     //MARK: - Lazy Inits
     
-    
-    
-    lazy var ratingSegment: UISegmentedControl = {
-       let view = UISegmentedControl(items: ["1","2","3","4","5"])
-       view.selectedSegmentIndex = 4
-       return view
+    lazy var starRating: CosmosView = {
+        let view = CosmosView()
+        view.rating = 1.0
+        view.settings.fillMode = .full
+        view.settings.starSize = 60
+        view.settings.starMargin = 20
+        view.didFinishTouchingCosmos = { (rating) in
+         print(rating)
+        }
+        view.settings.filledColor = UIColor.orange
+        view.settings.emptyBorderColor = UIColor.orange
+        view.settings.filledBorderColor = UIColor.orange
+        return view
     }()
-
+    
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
