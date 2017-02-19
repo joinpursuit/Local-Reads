@@ -12,16 +12,36 @@ import SnapKit
 
 class RegisterNewUserViewController: UIViewController {
 
+    let storageReference = FIRStorage.storage().reference().child("profileImages")
+    var profileImage: UIImage!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViewHierarchy()
         configureConstraints()
+        getRandomImage()
     }
 
+    func getRandomImage(){
+        let randomNum = Int(arc4random_uniform(9))
+        let str = "https://randomuser.me/api/portraits/lego/\(randomNum).jpg"
+        APIRequestManager.manager.getData(endPoint: str) { (data) in
+            if data != nil{
+                self.profileImage = UIImage(data: data!)
+                self.profileImageview.layer.cornerRadius = self.profileImageview.frame.height/2
+                self.profileImageview.layer.borderWidth = 1
+                self.profileImageview.image = self.profileImage
+                self.editButton.isHidden = false
+                self.profileImageview.layoutIfNeeded()
+            }else{
+                print("Wrong image url, no image data return.")
+            }
+        }
+    }
+    
     func registerTapped(){
-        if let email = emailTextField.text, let password = passwordTextField.text {
-            registerButton.isEnabled = false
+        if let email = emailTextField.text, let password = passwordTextField.text, let image = profileImage {
             FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error: Error?) in
                 if error != nil {
                     print("error with completion while creating new Authentication: \(error!)")
@@ -32,6 +52,21 @@ class RegisterNewUserViewController: UIViewController {
                     User.createUserInDatabase(email: email, name: self.nameTextField.text ?? "", profileImage: (user?.uid)!, currentLibrary: "Queens Library", completion: {
                         self.successfulRegister(username: email, password: password)
                     })
+                    
+                    let data = UIImageJPEGRepresentation(image, 0.5)
+                    
+                    let metadata = FIRStorageMetadata()
+                    metadata.cacheControl = "public,max-age=300";
+                    metadata.contentType = "image/jpeg";
+                    
+                    let _ = self.storageReference.child(user!.uid).put(data!, metadata: metadata, completion: { (metadata, error) in
+                        guard metadata != nil else {
+                            print("put error: failed to store profile image.")
+                            return
+                        }
+                    })
+                    
+                    
                 } else {
                     self.showOKAlert(title: "Error", message: error?.localizedDescription)
                 }
@@ -60,6 +95,7 @@ class RegisterNewUserViewController: UIViewController {
         
         self.view.addSubview(backButton)
         self.view.addSubview(profileImageview)
+        profileImageview.addSubview(editButton)
         self.view.addSubview(emailTextField)
         self.view.addSubview(nameTextField)
         self.view.addSubview(passwordTextField)
@@ -71,10 +107,17 @@ class RegisterNewUserViewController: UIViewController {
         backButton.snp.makeConstraints { (view) in
             view.top.leading.equalToSuperview().offset(30)
         }
+        
         profileImageview.snp.makeConstraints { (view) in
             view.centerX.equalToSuperview()
             view.top.equalToSuperview().offset(40)
-            view.size.equalTo(CGSize(width: 150, height: 150))
+            view.size.equalTo(CGSize(width: 200, height: 200))
+        }
+        
+        editButton.snp.makeConstraints { (view) in
+            view.bottom.equalToSuperview()
+            view.centerX.equalToSuperview()
+            view.width.equalToSuperview()
         }
         
         emailTextField.snp.makeConstraints { (view) in
@@ -85,17 +128,15 @@ class RegisterNewUserViewController: UIViewController {
         
         nameTextField.snp.makeConstraints { (view) in
             view.width.equalToSuperview().multipliedBy(0.7)
-            view.top.equalTo(emailTextField.snp.bottom).offset(50)
+            view.top.equalTo(emailTextField.snp.bottom).offset(30)
             view.centerX.equalToSuperview()
         }
         
         passwordTextField.snp.makeConstraints { (view) in
             view.width.equalToSuperview().multipliedBy(0.7)
-            view.top.equalTo(nameTextField.snp.bottom).offset(50)
+            view.top.equalTo(nameTextField.snp.bottom).offset(30)
             view.centerX.equalToSuperview()
         }
-        
-        
         
         registerButton.snp.makeConstraints { (view) in
             view.width.equalToSuperview().multipliedBy(0.5)
@@ -115,8 +156,25 @@ class RegisterNewUserViewController: UIViewController {
     //MARK: - Lazy Inits
     lazy var profileImageview: UIImageView = {
         let view = UIImageView()
-        view.backgroundColor = .lightGray
+        view.contentMode = .scaleAspectFill
+        view.layer.masksToBounds = false
+        view.layer.borderColor = UIColor.lightGray.cgColor
+        
+        view.clipsToBounds = true
         return view
+    }()
+    
+    lazy var editButton: UIButton = {
+        let button = UIButton()
+        button.isEnabled = true
+        button.setTitleColor(.blue, for: .normal)
+        button.setTitle("Edit", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        button.backgroundColor = .white
+        button.alpha = 0.7
+        button.isHidden = true
+//        button.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        return button
     }()
     
     lazy var emailTextField: UITextField = {
