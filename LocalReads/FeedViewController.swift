@@ -100,7 +100,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let post = posts[indexPath.row]
         
-        cell.usernameLabel.text = post.username
+        cell.usernameLabel.text = post.userName
         cell.bookTitileLabel.text = post.bookTitle
         cell.bookAuthorLabel.text = post.bookAuthor
         cell.libraryNameLabel.text = post.libraryName
@@ -135,6 +135,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let view = UITableView()
         return view
     }()
+    
+    
 
     
 }
