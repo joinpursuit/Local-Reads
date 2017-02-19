@@ -70,18 +70,6 @@ class Library {
     }
     
     
-    //copy and paste this function to the view conroller that needs it
-    func getLibraries() {
-        APIRequestManager.manager.getData(endPoint: "https://data.cityofnewyork.us/resource/b67a-vkqb.json") { (data) in
-            if let data = data {
-                if let libraies = Library.getLibraries(from: data) {
-                    dump(libraies)
-                }
-            }
-        }
-    }
-
-    
     
     
 }
