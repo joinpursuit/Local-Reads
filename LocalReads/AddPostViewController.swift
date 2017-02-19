@@ -83,6 +83,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.otherView.addSubview(starRating)
         self.otherView.addSubview(commentSection)
         self.otherView.addSubview(floatingButton)
+        self.otherView.addSubview(cancelButton)
         
         scrollView.isScrollEnabled = true
         scrollView.contentSize = otherView.frame.size
@@ -140,6 +141,12 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.width.height.equalTo(54)
             view.trailing.bottom.equalToSuperview().offset(-20)
         }
+        
+        cancelButton.snp.makeConstraints { (view) in
+            view.width.height.equalTo(54)
+            view.bottom.equalToSuperview().offset(-20)
+            view.leading.equalToSuperview().offset(20)
+        }
 
     }
     
@@ -175,6 +182,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
         commentSection.text = ""
         starRating.rating = 1.0
+    }
+    
+    func didTapCancel() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -342,6 +353,21 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         return button
     }()
     
+    internal lazy var cancelButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
+        button.setImage(UIImage(named: "x_symbol")!, for: .normal)
+        button.backgroundColor = ColorManager.shared.accent
+        button.layer.cornerRadius = 26
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOpacity = 0.8
+        button.layer.shadowOffset = CGSize(width: 0, height: 5)
+        button.layer.shadowRadius = 5
+        button.clipsToBounds = false
+        return button
+    }()
+
+    
     lazy var noResultsLabel: UILabel = {
         let view = UILabel()
         view.numberOfLines = 2
@@ -363,6 +389,5 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
     return button
     }()
-
     
-    }
+}
