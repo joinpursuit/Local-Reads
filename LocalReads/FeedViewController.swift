@@ -39,6 +39,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let library = FeedViewController.libraryToFilterBy {
             self.posts = self.posts.filter { $0.libraryName == library.name }
             tableView.reloadData()
+        } else {
+            fetchPosts()
         }
     }
     
