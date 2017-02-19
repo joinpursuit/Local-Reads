@@ -10,6 +10,8 @@ import UIKit
 import Firebase
 import SnapKit
 
+//!!!!!!!!!   Dont use this view controller    !!!!!!!!!!!!
+
 class RegisterNewUserViewController: UIViewController {
 
     let storageReference = FIRStorage.storage().reference().child("profileImages")
@@ -23,7 +25,7 @@ class RegisterNewUserViewController: UIViewController {
         getRandomImage()
     }
 
-    func getRandomImage(){
+    func getRandomImage() {
         let randomNum = Int(arc4random_uniform(9))
         let str = "https://randomuser.me/api/portraits/lego/\(randomNum).jpg"
         APIRequestManager.manager.getData(endPoint: str) { (data) in
@@ -53,17 +55,8 @@ class RegisterNewUserViewController: UIViewController {
                         self.successfulRegister(username: email, password: password)
                     })
                     
-                    let data = UIImageJPEGRepresentation(image, 0.5)
-                    
-                    let metadata = FIRStorageMetadata()
-                    metadata.cacheControl = "public,max-age=300";
-                    metadata.contentType = "image/jpeg";
-                    
-                    let _ = self.storageReference.child(user!.uid).put(data!, metadata: metadata, completion: { (metadata, error) in
-                        guard metadata != nil else {
-                            print("put error: failed to store profile image.")
-                            return
-                        }
+                    User.updateUserProfileImage(uid: (user?.uid)!, image: image, completion: { (error) in
+                        //error checking
                     })
                     
                     
@@ -83,9 +76,9 @@ class RegisterNewUserViewController: UIViewController {
         let viewC = presentingViewController as? LoginViewController
         
         self.dismiss(animated: true) {
-            viewC?.usernameTextField.text = username
+//            viewC?.usernameTextField.text = username
             viewC?.passwordTextField.text = password
-            viewC?.loginTapped()
+//            viewC?.loginTapped()
         }
     }
     
