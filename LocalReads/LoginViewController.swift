@@ -24,8 +24,29 @@ class LoginViewController: UIViewController {
         configureConstraints()
     }
     
+    override func viewDidLayoutSubviews() {
+        let border1 = CALayer()
+        let width = CGFloat(2.0)
+        border1.borderColor = ColorManager.shared.primaryDark.cgColor
+        border1.frame = CGRect(x: 0, y: emailTextField.frame.size.height - width, width:  emailTextField.frame.size.width, height: emailTextField.frame.size.height)
+        border1.borderWidth = width
+        emailTextField.layer.addSublayer(border1)
+        
+        let border2 = CALayer()
+        border2.borderColor = ColorManager.shared.primaryDark.cgColor
+        border2.frame = CGRect(x: 0, y: passwordTextField.frame.size.height - width, width:  passwordTextField.frame.size.width, height: passwordTextField.frame.size.height)
+        border2.borderWidth = width
+        passwordTextField.layer.addSublayer(border2)
+        
+        let border3 = CALayer()
+        border3.borderColor = ColorManager.shared.primaryDark.cgColor
+        border3.frame = CGRect(x: 0, y: nameTextField.frame.size.height - width, width:  nameTextField.frame.size.width, height: nameTextField.frame.size.height)
+        border3.borderWidth = width
+        nameTextField.layer.addSublayer(border3)
+    }
+    
     func setupViewHierarchy(){
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = ColorManager.shared.primaryLight
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         
         nameTextField.isHidden = true
@@ -41,6 +62,7 @@ class LoginViewController: UIViewController {
         containerView.addSubview(logAndRegButton)
         containerView.addSubview(resetPasswordButton)
         self.view.addSubview(memoLabel)
+        
     }
     
     func switchForm(sender: UISegmentedControl){
@@ -191,7 +213,7 @@ class LoginViewController: UIViewController {
         let feedBarItem = UITabBarItem(title: "News Feed", image: UIImage(named: "gallery_icon"), selectedImage: nil)
         let addBarItem = UITabBarItem(title: "Add", image: nil, selectedImage: nil)
         let profileBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "user_icon"), selectedImage: nil)
-        
+        profileBarItem.imageInsets = UIEdgeInsets(top: 3, left: 0, bottom: -3, right: 0)
         feedViewController.tabBarItem = feedBarItem
         addPostViewController.tabBarItem = addBarItem
         profileViewController.tabBarItem = profileBarItem
@@ -303,7 +325,7 @@ class LoginViewController: UIViewController {
     //MARK: - Lazy Inits
     lazy var BGImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "Blue-dotted-background")
+        view.backgroundColor = ColorManager.shared.primary
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
         return view
@@ -312,6 +334,10 @@ class LoginViewController: UIViewController {
     lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .clear
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.8
+        view.layer.shadowOffset = CGSize(width: 0, height: 5)
+        view.layer.shadowRadius = 6
         return view
     }()
     
@@ -333,6 +359,7 @@ class LoginViewController: UIViewController {
         let view = UISegmentedControl()
         view.insertSegment(withTitle: "Log in", at: 0, animated: true)
         view.insertSegment(withTitle: "Register", at: 1, animated: true)
+        view.tintColor = .white
         view.selectedSegmentIndex = 0
         view.addTarget(self, action: #selector(switchForm), for: .valueChanged)
         return view
@@ -342,10 +369,9 @@ class LoginViewController: UIViewController {
         let field = UITextField()
         field.placeholder = "Email"
         field.font = UIFont.systemFont(ofSize: 18)
-        field.layer.borderWidth = 1.0
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
-        field.layer.borderColor = UIColor.black.cgColor
+        field.layer.masksToBounds = true
         return field
     }()
     
@@ -353,10 +379,9 @@ class LoginViewController: UIViewController {
         let field = UITextField()
         field.placeholder = "Your name"
         field.font = UIFont.systemFont(ofSize: 18)
-        field.layer.borderWidth = 1.0
         field.autocorrectionType = .no
+        field.layer.masksToBounds = true
         field.autocapitalizationType = .none
-        field.layer.borderColor = UIColor.black.cgColor
         return field
     }()
     
@@ -364,22 +389,21 @@ class LoginViewController: UIViewController {
         let field = UITextField()
         field.placeholder = "Password"
         field.font = UIFont.systemFont(ofSize: 18)
-        field.layer.borderWidth = 1.0
         field.isSecureTextEntry = true
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
-        field.layer.borderColor = UIColor.black.cgColor
+        field.layer.masksToBounds = true
         return field
     }()
     
     lazy var logAndRegButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.setTitle("Log in", for: .normal)
         button.layer.borderWidth = 2.0
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderColor = UIColor.white.cgColor
         button.addTarget(self, action: #selector(iamTapped), for: .touchUpInside)
         return button
     }()
@@ -388,7 +412,7 @@ class LoginViewController: UIViewController {
         let button = UIButton()
         button.isEnabled = true
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.setTitle("Forgot password?", for: .normal)
         return button
     }()
@@ -399,6 +423,10 @@ class LoginViewController: UIViewController {
         label.textColor = .white
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 28)
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOpacity = 0.8
+        label.layer.shadowOffset = CGSize(width: 0, height: 5)
+        label.layer.shadowRadius = 5
         return label
     }()
 }
