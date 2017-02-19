@@ -33,8 +33,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("....library....")
-        dump(FeedViewController.libraryToFilterBy)
         
         if let library = FeedViewController.libraryToFilterBy {
             self.posts = self.posts.filter { $0.libraryName == library.name }
@@ -128,6 +126,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func libraryFilterTapped() {
         let libraryVC = LibraryFilterViewController()
+        libraryVC.viewStyle = .fromFeed
         navigationController?.pushViewController(libraryVC, animated: true)
     }
     

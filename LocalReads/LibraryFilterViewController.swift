@@ -9,12 +9,21 @@
 import UIKit
 import SnapKit
 
+
+enum LibraryViewStyle {
+    case fromFeed
+    case fromProfile
+}
+
 class LibraryFilterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var libraries: [Library] = []
     
     var selectedLibrary: Library?
     
+    var viewStyle: LibraryViewStyle!
+    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .yellow
@@ -28,14 +37,10 @@ class LibraryFilterViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func setNavBar() {
-        
-        
-        
-        let allButton = UIBarButtonItem(title: "All Libraries", style: .done, target: self, action: #selector(allLibrairesTapped))
-//        self.navBar.items //= [allButton]
-//        self.navBar.rightBarButtonItem = allButton
-        self.navigationItem.rightBarButtonItem = allButton
-
+        if self.viewStyle == LibraryViewStyle.fromFeed {
+            let allButton = UIBarButtonItem(title: "All Libraries", style: .done, target: self, action: #selector(allLibrairesTapped))
+            self.navigationItem.rightBarButtonItem = allButton
+        }
     }
     
     func setViews() {
@@ -76,13 +81,17 @@ class LibraryFilterViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "libraryTableViewCell", for: indexPath)
         cell.textLabel?.text = libraries[indexPath.row].name
-        cell.contentView.backgroundColor = .yellow
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedLibrary = libraries[indexPath.row]
-        FeedViewController.libraryToFilterBy = libraries[indexPath.row]
+        
+        if self.viewStyle == LibraryViewStyle.fromFeed {
+            FeedViewController.libraryToFilterBy = libraries[indexPath.row]
+        } else {
+            ProfileViewController.chosenLibrary = libraries[indexPath.row]
+        }
         _ = navigationController?.popViewController(animated: true)
     }
     

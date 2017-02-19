@@ -10,13 +10,17 @@ import UIKit
 import SnapKit
 import FirebaseDatabase
 import FirebaseAuth
+import FirebaseStorage
 
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var databaseReference: FIRDatabaseReference!
     
     var userPosts: [Post] = []
-
+    
+    static var chosenLibrary: Library?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.lrPrimaryLight()
@@ -24,13 +28,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         setNavBar()
         setupViews()
         setConstraints()
-        setProfilePic()
+        getUser()
         fetchPosts()
     }
     
-    func setProfilePic() {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        if let library = ProfileViewController.chosenLibrary {
+            // save libraray to use
+            User.updateUserLibrary(library: library, completion: { 
+                print("SUCCESS, updated userLibrary")
+            })
+        }
     }
+    
     
     func setNavBar() {
         let libraryButton = UIBarButtonItem(title: "Choose Library", style: .done, target: self, action: #selector(chooseLibraryTapped))
@@ -51,6 +63,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.rowHeight = UITableViewAutomaticDimension
 
         self.view.addSubview(profileImageView)
+
         self.view.addSubview(tableView)
     }
     
@@ -63,6 +76,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             view.width.equalTo(self.profileImageView.snp.height)
             view.centerX.equalToSuperview()
         }
+
         
         self.tableView.snp.makeConstraints { (view) in
             view.bottom.leading.trailing.equalToSuperview()
@@ -70,6 +84,46 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    
+    func getUser() {
+        let userReference = FIRDatabase.database().reference().child("users/\(FIRAuth.auth()!.currentUser!.uid)")
+        userReference.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let userDict = snapshot.value as? [String: Any],
+                let userName = userDict["name"] as? String {
+                self.navigationItem.title = userName
+            }
+        })
+        
+        //get image
+        let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
+        let spaceRef = storageReference.child("profileImages/\(FIRAuth.auth()!.currentUser!.uid)")
+        
+        spaceRef.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+            if let error = error {
+                print(error)
+            } else {
+                let image = UIImage(data: data!)
+                self.profileImageView.image = image
+            }
+        }
+    }
+    
+    func saveUserImage(imageData: Data) {
+        let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
+        let spaceRef = storageReference.child("profileImages/\(FIRAuth.auth()!.currentUser!.uid)")
+        let metadata = FIRStorageMetadata()
+        metadata.cacheControl = "public,max-age=300"
+        metadata.contentType = "image/jpeg"
+        
+        _ = spaceRef.put(imageData, metadata: metadata, completion: { (metadata, error) in
+            if error != nil {
+                print("Error putting image to storage")
+            }
+        })
+
+    }
+    
+
     
     // MARK: - Posts
     
@@ -130,7 +184,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
             self.profileImageView.image = image
-            // now save that image to the user and to storage
+            if let imageData = UIImageJPEGRepresentation(image, 0.5) {
+                self.saveUserImage(imageData: imageData)
+            }
         }
         self.dismiss(animated: true, completion: nil)
     }
@@ -149,8 +205,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func chooseLibraryTapped() {
-        
-        print("tap")
+        let libraryVC = LibraryFilterViewController()
+        libraryVC.viewStyle = .fromProfile
+        navigationController?.pushViewController(libraryVC, animated: true)
     }
     
     func logoutButtonTapped() {
@@ -163,7 +220,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 print("Error occured while logging out: \(error)")
             }
         }
-
     }
     
 
@@ -174,9 +230,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let view = UIImageView()
         view.image = #imageLiteral(resourceName: "user_icon")
         view.backgroundColor = UIColor.lrPrimary()
-        view.layer.cornerRadius = 90
         view.clipsToBounds = true
-        
+        view.layer.cornerRadius = 88
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(tapGestureRecognizer)

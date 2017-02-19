@@ -91,7 +91,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             ] as [String : Any]
             databaseRef.child("posts").child(key.key).updateChildValues(values, withCompletionBlock: { (error: Error?, reference: FIRDatabaseReference?) in
                 if error != nil {
-                    print(error)
+                    print(error!)
                 } else {
                 let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
                 let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
