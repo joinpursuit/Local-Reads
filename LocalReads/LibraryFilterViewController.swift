@@ -46,6 +46,7 @@ class LibraryFilterViewController: UIViewController, UITableViewDelegate, UITabl
     func setViews() {
         tableview.delegate = self
         tableview.dataSource = self
+        tableview.backgroundColor = ColorManager.shared.primaryLight
         self.view.addSubview(tableview)
         tableview.register(UITableViewCell.self, forCellReuseIdentifier: "libraryTableViewCell")
     }
@@ -81,6 +82,9 @@ class LibraryFilterViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "libraryTableViewCell", for: indexPath)
         cell.textLabel?.text = libraries[indexPath.row].name
+        cell.textLabel?.textColor = .white
+            cell.backgroundColor = ColorManager.shared.colorArray[indexPath.row % ColorManager.shared.colorArray.count]
+
         return cell
     }
     

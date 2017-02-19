@@ -23,7 +23,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.lrPrimaryLight()
+        self.view.backgroundColor = ColorManager.shared.primary
         self.databaseReference = FIRDatabase.database().reference().child("posts")
         setNavBar()
         setupViews()
@@ -45,6 +45,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func setNavBar() {
+        self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
+
         let libraryButton = UIBarButtonItem(title: "Choose Library", style: .done, target: self, action: #selector(chooseLibraryTapped))
         
         let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
@@ -61,7 +63,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
-
+        self.tableView.backgroundColor = ColorManager.shared.primaryLight
         self.view.addSubview(profileImageView)
 
         self.view.addSubview(tableView)
@@ -157,7 +159,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let post = userPosts[indexPath.row]
         
-        cell.usernameLabel.text = post.userName
+        cell.usernameLabel.isHidden = true
+        cell.userProfileImageView.isHidden = true
+        cell.bookCoverTopConstraint.constant = 8
         cell.bookTitileLabel.text = post.bookTitle
         cell.bookAuthorLabel.text = post.bookAuthor
         cell.libraryNameLabel.text = post.libraryName
