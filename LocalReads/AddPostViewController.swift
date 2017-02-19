@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Cosmos
 
-class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITextViewDelegate {
 
     var booksArray: [Book] = []
     var booksCollectionView: UICollectionView!
@@ -18,63 +18,139 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     var bookNibName = "BookCollectionViewCell"
     var apiEndpoint = "https://www.googleapis.com/books/v1/volumes?q="
     var selectedBook: Book!
+    var scrollView = UIScrollView()
+    var otherView = UIView()
+    var activeField: UITextField?
+
     
     //Will Attempt To Get Stars System
     var ratingTextView: UITextView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        registerForKeyboardNotifications()
         self.navigationItem.title = "What Book Have You Read"
         setupViewHierarchy()
         configureConstraints()
+    
+           }
+    
+    private func registerForKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
     }
+    
+    func keyboardWillShow(_ notification: Notification) {
+        
+        
+        if let info = notification.userInfo,
+            let sizeString = info[UIKeyboardFrameBeginUserInfoKey] as? NSValue {
+        
+            
+            //scrollView.setContentOffset(CGPoint(x:0, y: 600), animated: false)
+            
+            let keyboardSize = sizeString.cgRectValue
+        
+            let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            
+            scrollView.contentInset = contentInsets
+            
+            scrollView.scrollIndicatorInsets = contentInsets
+            var rect = self.view.frame
+            
+            rect.size.height -= keyboardSize.height
+//
+//            if let field = activeField {
+//                if !rect.contains(field.frame.origin) {
+//                    scrollView.scrollRectToVisible(field.frame, animated: true)
+//                }
+//            }
+        }
+    }
+    
+    func keyboardWillHide(_ notification: Notification) {
+        scrollView.contentInset = .zero;
+        scrollView.scrollIndicatorInsets = .zero;
+    }
+
 
     func setupViewHierarchy(){
         self.view.backgroundColor = .white
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         createBooksCollectionView()
-        self.view.addSubview(searchBar)
-        self.view.addSubview(booksCollectionView)
-        self.view.addSubview(commentSection)
-        self.view.addSubview(starRating)
+        self.view.addSubview(scrollView)
+        self.scrollView.addSubview(otherView)
+        self.otherView.addSubview(searchBar)
+        self.otherView.addSubview(booksCollectionView)
+        self.otherView.addSubview(starRating)
+        self.otherView.addSubview(commentSection)
+        self.commentSection.addSubview(uploadButton)
 
         
+        scrollView.isScrollEnabled = true
+        scrollView.contentSize = otherView.frame.size
+        scrollView.keyboardDismissMode = .interactive
+        
+        setTextView()
         let button = UIButton()
         button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
         button.snp.makeConstraints { (view) in
-                        view.width.height.equalTo(35.0)
-                  }
+            view.width.height.equalTo(35.0)
+        }
         button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
+        
         let navButton = UIBarButtonItem(customView: button)
         self.navigationItem.rightBarButtonItem = navButton
     }
     
     func configureConstraints(){
-        searchBar.snp.makeConstraints { (view) in
+        
+        scrollView.snp.makeConstraints { (view) in
+            view.trailing.leading.equalToSuperview()
             view.top.equalTo(self.topLayoutGuide.snp.bottom)
-            view.leading.trailing.equalToSuperview()
+            view.bottom.equalTo(self.bottomLayoutGuide.snp.top)
         }
+        
+        otherView.snp.makeConstraints { (view) in
+        view.leading.trailing.top.bottom.height.width.equalToSuperview()
+        }
+        
+        
+        searchBar.snp.makeConstraints { (view) in
+            view.width.equalToSuperview()
+            view.top.equalTo(scrollView.snp.top)
+            view.height.equalTo(30)
+        }
+        
         booksCollectionView.snp.makeConstraints { (view) in
-            view.top.equalTo(searchBar.snp.bottom).offset(10.0)
-            view.leading.trailing.equalToSuperview()
+            view.width.equalToSuperview()
+            view.centerX.equalToSuperview()
+            view.bottom.equalTo(starRating.snp.top).offset(-8.0)
             view.height.equalTo(330.0)
         }
+        
+        starRating.snp.makeConstraints { (view) in
+            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
+            view.width.equalToSuperview()
+            view.centerX.equalToSuperview()
+            view.height.equalTo(65)
+        }
+
         commentSection.snp.makeConstraints { (view) in
             view.bottom.equalToSuperview().inset(8.0)
             view.leading.equalToSuperview().offset(8.0)
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
-
-        starRating.snp.makeConstraints { (view) in
-            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
-            view.leading.equalToSuperview().offset(8.0)
-            view.width.equalToSuperview().offset(-8.0)
-        }
+        
+        uploadButton.snp.makeConstraints { (view) in
+            view.centerX.centerY.equalToSuperview()
+     }
     }
     
+    
     func didTapUpload() {
-        
         guard selectedBook != nil else { return print("Pick a book bruh") }
         
         let databaseRef = FIRDatabase.database().reference()
@@ -122,6 +198,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
         searchBar.text = ""
         commentSection.text = ""
+        searchBar.resignFirstResponder()
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -132,8 +209,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 booksCollectionView.scrollToItem(at: indexPath[1], at: .centeredHorizontally, animated: false)
             }
         }
-
     }
+    
+    
+    
     
     
     func createBooksCollectionView() {
@@ -196,14 +275,40 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         return cell
     }
 
+    //MARK: - Text View Delegates
+    func setTextView() {
+        commentSection.delegate = self
+        commentSection.text = "Add a description..."
+        commentSection.textColor = UIColor.lightGray
+        }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+    scrollView.setContentOffset(CGPoint(x:0, y: 250), animated: false)
+
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Add a description..."
+            textView.textColor = UIColor.lightGray
+        }
+        view.endEditing(true)
+    }
+    
+    
     //MARK: - Lazy Inits
 
+    
     lazy var starRating: CosmosView = {
         let view = CosmosView()
         view.rating = 1.0
         view.settings.fillMode = .full
         view.settings.starSize = 60
-        view.settings.starMargin = 20
+        view.settings.starMargin = 28
         view.didFinishTouchingCosmos = { (rating) in
          print(rating)
         }
@@ -216,6 +321,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
+        view.showsCancelButton = true
         return view
     }()
     
@@ -226,5 +332,16 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         view.layer.borderColor = UIColor.gray.cgColor
         return view
     }()
+    
+    lazy var uploadButton: UIButton = {
+    let button = UIButton()
+    button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
+    button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
+    button.snp.makeConstraints { (view) in
+    view.width.height.equalTo(35.0)
+        }
+    return button
+    }()
+
     
     }
