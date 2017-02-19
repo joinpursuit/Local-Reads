@@ -207,21 +207,19 @@ class LoginViewController: UIViewController {
     
     func successfullyLogin(){
         let feedViewController = UINavigationController(rootViewController: FeedViewController())
-        let addPostViewController = UINavigationController(rootViewController: AddPostViewController())
         let profileViewController = UINavigationController(rootViewController: ProfileViewController())
         
-        let feedBarItem = UITabBarItem(title: "News Feed", image: UIImage(named: "gallery_icon"), selectedImage: nil)
-        let addBarItem = UITabBarItem(title: "Add", image: nil, selectedImage: nil)
-        let profileBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "user_icon"), selectedImage: nil)
-        profileBarItem.imageInsets = UIEdgeInsets(top: 3, left: 0, bottom: -3, right: 0)
+
+        let feedBarItem = UITabBarItem(title: "", image: UIImage(named: "gallery_icon"), selectedImage: nil)
+        let profileBarItem = UITabBarItem(title: "", image: UIImage(named: "user_icon"), selectedImage: nil)
+        
         feedViewController.tabBarItem = feedBarItem
-        addPostViewController.tabBarItem = addBarItem
         profileViewController.tabBarItem = profileBarItem
         
         let tabView = UITabBarController()
         tabView.tabBar.tintColor = ColorManager.shared.accent
 
-        tabView.viewControllers = [feedViewController, addPostViewController, profileViewController]
+        tabView.viewControllers = [feedViewController, profileViewController]
         tabView.selectedIndex = 0
         self.present(tabView, animated: true, completion: nil)
         
