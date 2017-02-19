@@ -45,6 +45,18 @@ class User {
         }
     }
     
+    static func updateUserLibrary(library: Library, completion: @escaping (() -> Void)) {
+        let databaseUserReference = FIRDatabase.database().reference().child("users")
+        let userRef = databaseUserReference.child("\(FIRAuth.auth()!.currentUser!.uid)")
+        userRef.updateChildValues(["currentLibrary" : library.name]) { (error, reference) in
+            if error != nil {
+                print("Error updating userLibrary: \(error)")
+            }
+            completion()
+        }
+    }
+    
+
     
     
 }
