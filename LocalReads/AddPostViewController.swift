@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import FirebaseDatabase
+import Firebase
 
 class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
@@ -35,9 +35,16 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         self.view.addSubview(searchBar)
         self.view.addSubview(booksCollectionView)
         self.view.addSubview(commentSection)
+        self.view.addSubview(ratingSegment)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "uploadScreen"), style: .plain, target: self, action: #selector(didTapUpload))
-        
+        let button = UIButton()
+        button.setBackgroundImage(#imageLiteral(resourceName: "Button-Up-512"), for: .normal)
+        button.snp.makeConstraints { (view) in
+                        view.width.height.equalTo(35.0)
+                  }
+        button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
+        let navButton = UIBarButtonItem(customView: button)
+        self.navigationItem.rightBarButtonItem = navButton
     }
     
     func configureConstraints(){
@@ -48,7 +55,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         booksCollectionView.snp.makeConstraints { (view) in
             view.top.equalTo(searchBar.snp.bottom).offset(10.0)
             view.leading.trailing.equalToSuperview()
-            view.height.equalTo(250.0)
+            view.height.equalTo(330.0)
         }
         commentSection.snp.makeConstraints { (view) in
             view.bottom.equalToSuperview().inset(8.0)
@@ -56,15 +63,34 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.trailing.equalToSuperview().inset(8.0)
             view.height.equalTo(150.0)
         }
+        ratingSegment.snp.makeConstraints { (view) in
+            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
+            view.leading.equalToSuperview().offset(8.0)
+            view.width.equalTo(150.0)
+        }
     }
     
     func didTapUpload() {
+        
+        guard selectedBook != nil else { return print("Pick a book bruh") }
+        
         let databaseRef = FIRDatabase.database().reference()
+        print(123)
+        let key = databaseRef.childByAutoId()
         
-//        let values = [
-//        ]
-        
-//        databaseRef.child("posts").childByAutoId().updateChildValues(<#T##values: [AnyHashable : Any]##[AnyHashable : Any]#>)
+        if let currentUser = LoginViewController.currentUser {
+            let values = ["bookTitle" : selectedBook.title,
+                          "bookAuthor" : selectedBook.author,
+                          "bookImageURL" : selectedBook.thumbNail,
+                          "userName" : currentUser.name,
+                          "key" : key.key,
+                          "userComment" : commentSection.text!,
+                          "userRating" : ratingSegment.selectedSegmentIndex + 1,
+                          "libraryName" : currentUser.currentLibrary
+            ] as [String : Any]
+            databaseRef.child("posts").child(key.key).updateChildValues(values)
+        }
+        commentSection.text = ""
     }
     
     
@@ -82,15 +108,26 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             }
         }
         searchBar.text = ""
+        commentSection.text = ""
     }
     
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == booksCollectionView {
+            
+            for _ in booksCollectionView.visibleCells {
+                let indexPath = self.booksCollectionView.indexPathsForVisibleItems
+                booksCollectionView.scrollToItem(at: indexPath[1], at: .centeredHorizontally, animated: false)
+            }
+        }
+
+    }
     
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 150, height: 250)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
+        layout.itemSize = CGSize(width: 230, height: 330)
+        layout.minimumInteritemSpacing = 8
+        layout.minimumLineSpacing = 10
         layout.scrollDirection = .horizontal
         
         booksCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
@@ -101,9 +138,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         let nib = UINib(nibName: bookNibName, bundle:nil)
         booksCollectionView.register(nib, forCellWithReuseIdentifier: reuseIdentifier)
         booksCollectionView.backgroundColor = UIColor.gray
-        
-        
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -115,6 +149,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.backgroundColor = .green
         selectedBook = booksArray[indexPath.row]
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         
     }
     
@@ -144,6 +179,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
 
     //MARK: - Lazy Inits
+    
+    
+    
+    lazy var ratingSegment: UISegmentedControl = {
+       let view = UISegmentedControl(items: ["1","2","3","4","5"])
+       view.selectedSegmentIndex = 4
+       return view
+    }()
+
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
