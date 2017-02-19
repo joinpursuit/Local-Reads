@@ -29,11 +29,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         setupViews()
         setConstraints()
         getUser()
-        fetchPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchPosts()
         
         if let library = ProfileViewController.chosenLibrary {
             // save libraray to use
