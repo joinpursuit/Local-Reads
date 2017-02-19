@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import Cosmos
 
 class PostTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var cardView: UIView!
     
     @IBOutlet weak var usernameLabel: UILabel!
     
@@ -27,6 +29,9 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var userCommentLabel: UILabel!
     
     
+    
+    @IBOutlet weak var bookCoverTopConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var coverLoadActivityIndicator: UIActivityIndicatorView!
     
     
@@ -34,12 +39,27 @@ class PostTableViewCell: UITableViewCell {
         super.awakeFromNib()
         userProfileImageView.layer.cornerRadius = 22
         userProfileImageView.clipsToBounds = true
+        
+        cardView.layer.shadowColor = UIColor.black.cgColor
+        cardView.layer.shadowOpacity = 0.8
+        cardView.layer.shadowOffset = CGSize(width: 0, height: 5)
+        cardView.layer.shadowRadius = 8
+
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    
+    func rating(_ value: Int) {
+        var ratingString = ""
+        for _ in 1...value {
+            ratingString += "⭐"
+        }
+        self.userRatingLabel.text = ratingString
     }
     
 }

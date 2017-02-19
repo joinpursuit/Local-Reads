@@ -32,6 +32,7 @@
 		DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */; };
 		DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */; };
 		DE09F6A71E58EBEA003DBC7C /* LibraryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */; };
+		DED375E81E59FB02006A3F0B /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED375E71E59FB02006A3F0B /* ColorManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,7 @@
 		DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 		DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryFilterViewController.swift; sourceTree = "<group>"; };
+		DED375E71E59FB02006A3F0B /* ColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,6 +155,7 @@
 			isa = PBXGroup;
 			children = (
 				DE09F6971E586CED003DBC7C /* APIManager.swift */,
+				DED375E71E59FB02006A3F0B /* ColorManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				DE09F6951E586CA2003DBC7C /* Library.swift in Sources */,
 				066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */,
 				DE09F67C1E5864FC003DBC7C /* AppDelegate.swift in Sources */,
+				DED375E81E59FB02006A3F0B /* ColorManager.swift in Sources */,
 				066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */,
 				DE09F6901E586C5E003DBC7C /* Book.swift in Sources */,
 			);
