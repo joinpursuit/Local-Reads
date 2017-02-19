@@ -179,6 +179,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         cell.bookImage.image = nil
         
         cell.bookTitle.text = aBook.title
+        
+        if aBook.thumbNail == "" {
+            cell.bookImage.image = #imageLiteral(resourceName: "missingbook")
+        } else {
         APIRequestManager.manager.getData(endPoint: aBook.thumbNail) { (data) in
             if let validData = data {
                 let image = UIImage(data: validData)
@@ -186,6 +190,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                     cell.bookImage.image = image
                     cell.setNeedsLayout()
                 }
+            }
             }
         }
         return cell
