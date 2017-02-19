@@ -11,7 +11,7 @@ import SnapKit
 import FirebaseDatabase
 import FirebaseAuth
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var databaseReference: FIRDatabaseReference!
     
@@ -89,6 +89,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             self.tableView.reloadData()
         })
     }
+
     
     
     // MARK: - Tableview Data
@@ -124,8 +125,28 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     }
     
+    //MARK: - ImagePickerController Delegate Method
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            self.profileImageView.image = image
+            // now save that image to the user and to storage
+        }
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    
     
     // MARK: - Actions
+    
+    func profileImageTapped() {
+        print("profile tap")
+        
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        self.present(imagePickerController, animated: true, completion: nil)
+    }
     
     func chooseLibraryTapped() {
         
@@ -144,6 +165,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
 
     }
+    
 
    
     // MARK: - Lazy vars
@@ -154,6 +176,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.backgroundColor = UIColor.lrPrimary()
         view.layer.cornerRadius = 90
         view.clipsToBounds = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tapGestureRecognizer)
         return view
     }()
     
