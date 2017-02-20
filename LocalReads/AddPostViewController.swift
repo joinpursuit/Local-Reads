@@ -103,7 +103,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         searchBar.snp.makeConstraints { (view) in
             view.width.equalToSuperview()
             view.top.equalToSuperview().offset(20)
-            view.height.equalTo(30)
         }
         
         booksCollectionView.snp.makeConstraints { (view) in
@@ -118,17 +117,17 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
         
         starRating.snp.makeConstraints { (view) in
-            view.bottom.equalTo(commentSection.snp.top).offset(8.0)
+            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
             view.width.equalToSuperview()
             view.centerX.equalToSuperview()
-            view.height.equalTo(65)
+            view.height.equalTo(Double((self.view.frame.width - (28*4))/5))
         }
 
         commentSection.snp.makeConstraints { (view) in
             view.bottom.equalTo(floatingButton.snp.top).offset(8.0)
             view.leading.equalToSuperview().offset(8.0)
             view.trailing.equalToSuperview().inset(8.0)
-            view.height.equalTo(150.0)
+            view.height.equalTo(Double(self.view.frame.width/3))
         }
         
         floatingButton.snp.makeConstraints { (view) in
