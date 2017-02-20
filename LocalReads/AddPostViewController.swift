@@ -325,6 +325,8 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     lazy var searchBar: UISearchBar = {
         let view = UISearchBar()
         view.delegate = self
+        view.barTintColor = ColorManager.shared.primaryDark
+        view.searchBarStyle = .minimal
         return view
     }()
     
