@@ -24,6 +24,25 @@ class LoginViewController: UIViewController {
         configureConstraints()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        let animator = UIViewPropertyAnimator(duration: 0.8, curve: .easeIn, animations: nil)
+        
+        logoImageView.alpha = 0.3
+        logoImageView.snp.removeConstraints()
+        logoImageView.snp.remakeConstraints { (view) in
+            view.size.equalTo(CGSize(width: 200, height: 150))
+            view.centerX.equalToSuperview()
+            view.centerY.equalTo(containerView.snp.top)
+        }
+        
+        animator.addAnimations {
+            self.logoImageView.alpha = 1.0
+            self.containerView.layoutIfNeeded()
+        }
+        
+        animator.startAnimation()
+    }
+    
     override func viewDidLayoutSubviews() {
         let border1 = CALayer()
         let width = CGFloat(2.0)
@@ -243,7 +262,7 @@ class LoginViewController: UIViewController {
         }
         
         logoImageView.snp.makeConstraints { (view) in
-            view.size.equalTo(CGSize(width: 200, height: 150))
+            view.size.equalTo(CGSize(width: 0, height: 0))
             view.centerX.equalToSuperview()
             view.centerY.equalTo(containerView.snp.top)
         }
