@@ -12,6 +12,11 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
+enum ProfileViewType {
+    case admin
+    case vistor
+}
+
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var databaseReference: FIRDatabaseReference!
@@ -20,11 +25,18 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     static var chosenLibrary: Library?
     
+    var viewType: ProfileViewType = .admin
+    var profileUserID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = ColorManager.shared.primary
         self.databaseReference = FIRDatabase.database().reference().child("posts")
+        
+        if profileUserID == nil {
+            profileUserID = (FIRAuth.auth()?.currentUser?.uid)!
+        }
+        
         setNavBar()
         setupViews()
         setConstraints()
@@ -45,14 +57,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     func setNavBar() {
-        self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
+        if viewType == .admin {
+            let libraryButton = UIBarButtonItem(title: "Choose Library", style: .done, target: self, action: #selector(chooseLibraryTapped))
+            
+            let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
+            
+            self.navigationItem.rightBarButtonItem = libraryButton
+            self.navigationItem.leftBarButtonItem = logoutButton
+            
+            self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
+        }
 
-        let libraryButton = UIBarButtonItem(title: "Choose Library", style: .done, target: self, action: #selector(chooseLibraryTapped))
-        
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
-        
-        self.navigationItem.rightBarButtonItem = libraryButton
-        self.navigationItem.leftBarButtonItem = logoutButton
         
     }
 
@@ -68,6 +83,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.view.addSubview(profileImageView)
 
         self.view.addSubview(tableView)
+        
+        if self.viewType == .vistor {
+            self.profileImageView.isUserInteractionEnabled = false
+        }
     }
     
     func setConstraints() {
@@ -88,8 +107,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     
+    
     func getUser() {
-        let userReference = FIRDatabase.database().reference().child("users/\(FIRAuth.auth()!.currentUser!.uid)")
+        //let userID: String = visitorUserID ?? (FIRAuth.auth()?.currentUser?.uid)!
+        let userReference = FIRDatabase.database().reference().child("users/\(profileUserID)")
         userReference.observeSingleEvent(of: .value, with: { (snapshot) in
             if let userDict = snapshot.value as? [String: Any],
                 let userName = userDict["name"] as? String {
@@ -99,7 +120,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         //get image
         let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
-        let spaceRef = storageReference.child("profileImages/\(FIRAuth.auth()!.currentUser!.uid)")
+        let spaceRef = storageReference.child("profileImages/\(profileUserID!)")
         
         spaceRef.data(withMaxSize: 1 * 1024 * 1024) { data, error in
             if let error = error {
@@ -142,7 +163,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
             // chronological order
-            self.userPosts = fetchedPosts.filter{ $0.userName == LoginViewController.currentUser.name }.reversed()
+            self.userPosts = fetchedPosts.filter{ $0.userID == self.profileUserID }.reversed()
             self.tableView.reloadData()
         })
     }

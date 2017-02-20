@@ -17,8 +17,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.text = "demo@hahaha.com"
-        passwordTextField.text = "000000"
+        emailTextField.text = "vinny@vinny.com"
+        passwordTextField.text = "foobar123"
         
         setupViewHierarchy()
         configureConstraints()

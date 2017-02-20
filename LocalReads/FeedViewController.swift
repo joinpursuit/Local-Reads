@@ -107,26 +107,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
             }
             self.allPosts = fetchedPosts.reversed()
         })
-        
-//        databaseReference.observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
-//            var fetchedPosts: [Post] = []
-//            for child in snapshot.children {
-//                if let snap = child as? FIRDataSnapshot, let valueDict = snap.value as? [String: AnyObject] {
-//                    
-//                    if let post = Post(from: valueDict, key: snap.key) {
-//                        fetchedPosts.append(post)
-//                    }
-//                }
-//            }
-//            // chronological order
-////            if let library = FeedViewController.libraryToFilterBy {
-////                self.posts = self.posts.filter { $0.libraryName == library.name }.reversed()
-////            } else {
-////                self.posts = fetchedPosts.reversed()
-////            }
-//            self.posts = fetchedPosts.reversed()
-//            self.tableView.reloadData()
-//        })
     }
     
     
@@ -172,9 +152,17 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                 cell.userProfileImageView.image = image
             }
         }
-
-        
         return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let post = filteredPosts[indexPath.row]
+        let profileVC = ProfileViewController()
+        profileVC.viewType = .vistor
+        profileVC.profileUserID = post.userID
+        navigationController?.pushViewController(profileVC, animated: true)
+        
     }
     
     
@@ -187,7 +175,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func handleRefresh(_ refreshControl: UIRefreshControl) {
-        
         fetchPosts()
         refreshControl.endRefreshing()
     }
