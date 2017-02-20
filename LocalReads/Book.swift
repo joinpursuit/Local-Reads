@@ -31,7 +31,7 @@ class Book {
             let authorsArray = bookInfo["authors"] as? [String]
             let author = authorsArray?[0] ?? ""
             let thumbNailDict = bookInfo["imageLinks"] as? [String: String] ?? ["thumbnail":""]
-            let thumbNail = thumbNailDict["thumbnail"]!.replacingOccurrences(of: "http", with: "https")
+            let thumbNail = thumbNailDict["thumbnail"]!.replacingOccurrences(of: "http", with: "https").replacingOccurrences(of: "curl", with: "cur")
             
             self.init(title: title, author: author, publishedDate: publishedDate, thumbNail: thumbNail)
         } else {

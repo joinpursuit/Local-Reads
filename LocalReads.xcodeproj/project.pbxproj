@@ -223,7 +223,6 @@
 				TargetAttributes = {
 					DE09F6771E5864FC003DBC7C = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 7NBTE6SY4Z;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -457,7 +456,7 @@
 			baseConfigurationReference = B6E76D9E92A280FDBCBDAE82 /* Pods-LocalReads.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7NBTE6SY4Z;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LocalReads/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.c4q.TMT.LocalReads;
@@ -471,7 +470,7 @@
 			baseConfigurationReference = FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7NBTE6SY4Z;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LocalReads/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.c4q.TMT.LocalReads;

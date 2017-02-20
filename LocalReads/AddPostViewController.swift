@@ -29,7 +29,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     override func viewDidLoad() {
         super.viewDidLoad()
         registerForKeyboardNotifications()
-        self.navigationItem.title = "What Book Have You Read"
         setupViewHierarchy()
         configureConstraints()
         if booksArray.count == 0 {
@@ -46,16 +45,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     }
     
     func keyboardWillShow(_ notification: Notification) {
-        
-        
         if let info = notification.userInfo,
             let sizeString = info[UIKeyboardFrameBeginUserInfoKey] as? NSValue {
-        
-            
-            //scrollView.setContentOffset(CGPoint(x:0, y: 600), animated: false)
-            
             let keyboardSize = sizeString.cgRectValue
-        
+            
             let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
             
             scrollView.contentInset = contentInsets
@@ -110,15 +103,16 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         
         searchBar.snp.makeConstraints { (view) in
             view.width.equalToSuperview()
-            view.top.equalTo(scrollView.snp.top).offset(20)
+            view.top.equalToSuperview().offset(20)
             view.height.equalTo(30)
         }
         
         booksCollectionView.snp.makeConstraints { (view) in
             view.width.equalToSuperview()
             view.centerX.equalToSuperview()
+            view.top.equalTo(searchBar.snp.bottom).offset(15)
             view.bottom.equalTo(starRating.snp.top).offset(-8.0)
-            view.height.equalTo(330.0)
+            //view.height.equalTo(330.0)
         }
         
         noResultsLabel.snp.makeConstraints { (view) in
@@ -126,7 +120,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         }
         
         starRating.snp.makeConstraints { (view) in
-            view.bottom.equalTo(commentSection.snp.top).offset(-8.0)
+            view.bottom.equalTo(commentSection.snp.top).offset(8.0)
             view.width.equalToSuperview()
             view.centerX.equalToSuperview()
             view.height.equalTo(65)
@@ -154,10 +148,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     
     func didTapUpload() {
-        guard selectedBook != nil else { return print("Pick a book bruh") }
+        guard selectedBook != nil else {
+            let alert = UIAlertController(title: "Oh No", message: "Pick A Book", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
         
         let databaseRef = FIRDatabase.database().reference()
-        print(123)
         let key = databaseRef.childByAutoId()
         
         if let currentUser = LoginViewController.currentUser {
@@ -175,10 +174,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
                 if error != nil {
                     print(error!)
                 } else {
-                let alert = UIAlertController(title: "Complete!", message: "Upload Complete!", preferredStyle: .alert)
-                let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                alert.addAction(ok)
-                self.present(alert, animated: true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
                 }
             })
         }
@@ -225,7 +221,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 230, height: 330)
+        layout.itemSize = CGSize(width: 170, height: 270)
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .horizontal
@@ -316,7 +312,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         let view = CosmosView()
         view.rating = 1.0
         view.settings.fillMode = .full
-        view.settings.starSize = 60
         view.settings.starMargin = 28
         view.didFinishTouchingCosmos = { (rating) in
          print(rating)
