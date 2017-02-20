@@ -64,6 +64,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = ColorManager.shared.primaryLight
+
         self.view.addSubview(profileImageView)
 
         self.view.addSubview(tableView)
@@ -159,13 +160,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         
         let post = userPosts[indexPath.row]
         
+        cell.selectedBackgroundView?.backgroundColor = ColorManager.shared.primaryDark
+        
         cell.usernameLabel.isHidden = true
         cell.userProfileImageView.isHidden = true
         cell.bookCoverTopConstraint.constant = 8
         cell.bookTitileLabel.text = post.bookTitle
-        cell.bookAuthorLabel.text = post.bookAuthor
-        cell.libraryNameLabel.text = post.libraryName
-        cell.userRatingLabel.text = String(post.userRating)
+        cell.bookAuthorLabel.text = "by: \(post.bookAuthor)"
+        cell.libraryNameLabel.text = "Library:  \(post.libraryName)"
+        cell.rating(post.userRating)
         cell.userCommentLabel.text = post.userComment
         cell.bookCoverImageView.image = nil
         cell.coverLoadActivityIndicator.hidesWhenStopped = true
@@ -180,7 +183,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         return cell
-
     }
     
     //MARK: - ImagePickerController Delegate Method
