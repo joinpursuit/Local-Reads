@@ -26,7 +26,7 @@ class Book {
     convenience init?(from dictionary: [String:Any])  {
         if let bookInfo = dictionary["volumeInfo"] as? [String: Any] {
             
-            let title = bookInfo["title"] as! String
+            let title = bookInfo["title"] as? String ?? "No Title"
             let publishedDate = bookInfo["publishedDate"] as? String ?? "No Date"
             let authorsArray = bookInfo["authors"] as? [String]
             let author = authorsArray?[0] ?? ""

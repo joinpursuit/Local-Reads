@@ -21,7 +21,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     var scrollView = UIScrollView()
     var otherView = UIView()
     var activeField: UITextField?
-
     
     //Will Attempt To Get Stars System
     var ratingTextView: UITextView!
@@ -112,7 +111,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
             view.centerX.equalToSuperview()
             view.top.equalTo(searchBar.snp.bottom).offset(15)
             view.bottom.equalTo(starRating.snp.top).offset(-8.0)
-            //view.height.equalTo(330.0)
         }
         
         noResultsLabel.snp.makeConstraints { (view) in
@@ -221,7 +219,6 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     func createBooksCollectionView() {
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 170, height: 270)
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 10
         layout.scrollDirection = .horizontal
@@ -253,6 +250,10 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath)
         cell?.backgroundColor =  UIColor.clear
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return  CGSize.init(width: (booksCollectionView.frame.width/2) , height: booksCollectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
