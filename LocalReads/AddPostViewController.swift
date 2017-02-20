@@ -35,7 +35,9 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
         if booksArray.count == 0 {
             noResultsLabel.isHidden = false
         }
-           }
+        
+        starRating.settings.starSize = Double((self.view.frame.width - (28*4))/5)
+    }
     
     private func registerForKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
