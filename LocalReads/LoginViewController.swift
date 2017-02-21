@@ -268,7 +268,7 @@ class LoginViewController: UIViewController {
         }
         
         logoImageView.snp.makeConstraints { (view) in
-            view.size.equalTo(CGSize(width: 0, height: 0))
+            view.size.equalTo(CGSize(width: 50, height: 50))
             view.centerX.equalToSuperview()
             view.centerY.equalTo(containerView.snp.top)
         }
