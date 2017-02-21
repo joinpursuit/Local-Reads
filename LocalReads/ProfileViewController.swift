@@ -321,6 +321,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let imagePickerController = UIImagePickerController()
         imagePickerController.sourceType = .photoLibrary
         imagePickerController.delegate = self
+        imagePickerController.navigationBar.tintColor = ColorManager.shared.accent
+        imagePickerController.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.white
+        ]
         self.present(imagePickerController, animated: true, completion: nil)
     }
     
@@ -362,6 +366,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.backgroundColor = ColorManager.shared.primaryLight
         view.clipsToBounds = true
         view.alpha = 0
+        view.image = #imageLiteral(resourceName: "user_icon")
         view.layer.cornerRadius = 70
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))
         view.isUserInteractionEnabled = true
