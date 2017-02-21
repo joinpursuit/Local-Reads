@@ -341,7 +341,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     internal lazy var floatingButton: UIButton = {
         let button = UIButton(type: .custom)
         button.addTarget(self, action: #selector(didTapUpload), for: .touchUpInside)
-        button.setImage(UIImage(named: "plus_symbol")!, for: .normal)
+        button.setImage(UIImage(named: "checkmark_symbol")!, for: .normal)
         button.backgroundColor = ColorManager.shared.accent
         button.layer.cornerRadius = 26
         button.layer.shadowColor = UIColor.black.cgColor

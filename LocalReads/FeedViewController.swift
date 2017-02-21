@@ -59,8 +59,8 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func setNavBar() {
         self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
-
-        let filterButton = UIBarButtonItem(title: "Library Filter", style: .done, target: self, action: #selector(libraryFilterTapped))
+        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filterIcon"), style: .done, target: self, action: #selector(libraryFilterTapped))
+//        let filterButton = UIBarButtonItem(title: "Library Filter", style: .done, target: self, action: #selector(libraryFilterTapped))
         self.navigationItem.rightBarButtonItem = filterButton
     }
     
@@ -161,6 +161,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         let profileVC = ProfileViewController()
         profileVC.viewType = .vistor
         profileVC.profileUserID = post.userID
+        navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         navigationController?.pushViewController(profileVC, animated: true)
         
     }
@@ -171,6 +172,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     func libraryFilterTapped() {
         let libraryVC = LibraryFilterViewController()
         libraryVC.viewStyle = .fromFeed
+        navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         navigationController?.pushViewController(libraryVC, animated: true)
     }
     
