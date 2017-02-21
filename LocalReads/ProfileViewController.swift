@@ -161,7 +161,12 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 
                 self.navigationItem.title = userName
                 self.userNameLabel.text = userName
-                self.userLibraryLabel.text = "Library: \(library)"
+                
+                if !library.isEmpty {
+                    self.userLibraryLabel.text = "Library: \(library)"
+                } else {
+                    self.userLibraryLabel.text = "Please choose your library"
+                }
             }
         })
         
