@@ -7,17 +7,41 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        application.isStatusBarHidden = true
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = LaunchViewController()
+        self.window?.makeKeyAndVisible()
+        
+        setNavigationTheme()
+        
+        FIRApp.configure()
+
         return true
     }
+    
+    func setNavigationTheme() {
+        let navigationBarAppearace = UINavigationBar.appearance()
+        navigationBarAppearace.backgroundColor = ColorManager.shared.primaryLight
+        navigationBarAppearace.barTintColor = ColorManager.shared.primaryDark
+        navigationBarAppearace.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white,
+                                                      NSFontAttributeName: UIFont.systemFont(ofSize: 18, weight: UIFontWeightLight)]
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        let tabBarAppearance = UITabBar.appearance()
+        tabBarAppearance.backgroundColor = ColorManager.shared.primaryLight
+        tabBarAppearance.barTintColor = ColorManager.shared.primaryLight
+        
+        
+    }
+
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

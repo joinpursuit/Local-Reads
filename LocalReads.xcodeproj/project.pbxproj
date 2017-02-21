@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		066CCDDD1E58A8D700D51267 /* FlowChart.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 066CCDDC1E58A8D700D51267 /* FlowChart.storyboard */; };
+		066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */; };
+		066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE01E58B3B500D51267 /* ProfileViewController.swift */; };
+		066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE21E58B3C400D51267 /* FeedViewController.swift */; };
+		066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */; };
+		066CCDE71E58D02C00D51267 /* RegisterNewUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */; };
+		06B239711E5C9F660071E17F /* giphy.gif in Resources */ = {isa = PBXBuildFile; fileRef = 06B239701E5C9F660071E17F /* giphy.gif */; };
+		06B239731E5CA1840071E17F /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B239721E5CA1840071E17F /* LaunchViewController.swift */; };
+		06B239751E5CA71D0071E17F /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06B239741E5CA71D0071E17F /* UIImage+Gif.swift */; };
+		3E287A941E58BE6900512F41 /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */; };
+		3E287A971E58DAD400512F41 /* BookCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */; };
+		3E287A991E5922C500512F41 /* SwiftyStarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E287A981E5922C500512F41 /* SwiftyStarRatingView.swift */; };
 		8FD27E5BA1DA854DBB4DFAAC /* Pods_LocalReads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */; };
 		DE09F67C1E5864FC003DBC7C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F67B1E5864FC003DBC7C /* AppDelegate.swift */; };
 		DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F67D1E5864FC003DBC7C /* ViewController.swift */; };
@@ -19,9 +31,26 @@
 		DE09F6951E586CA2003DBC7C /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6941E586CA2003DBC7C /* Library.swift */; };
 		DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6971E586CED003DBC7C /* APIManager.swift */; };
 		DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */; };
+		DE09F69E1E58B424003DBC7C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F69D1E58B424003DBC7C /* Post.swift */; };
+		DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */; };
+		DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */; };
+		DE09F6A71E58EBEA003DBC7C /* LibraryFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */; };
+		DED375E81E59FB02006A3F0B /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DED375E71E59FB02006A3F0B /* ColorManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		066CCDDC1E58A8D700D51267 /* FlowChart.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FlowChart.storyboard; sourceTree = "<group>"; };
+		066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		066CCDE01E58B3B500D51267 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		066CCDE21E58B3C400D51267 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
+		066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterNewUserViewController.swift; sourceTree = "<group>"; };
+		06B239701E5C9F660071E17F /* giphy.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = giphy.gif; sourceTree = "<group>"; };
+		06B239721E5CA1840071E17F /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		06B239741E5CA71D0071E17F /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
+		3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
+		3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BookCollectionViewCell.xib; sourceTree = "<group>"; };
+		3E287A981E5922C500512F41 /* SwiftyStarRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyStarRatingView.swift; sourceTree = "<group>"; };
 		8A1C66E9BE7799C9F21642DF /* Pods_LocalReads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocalReads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6E76D9E92A280FDBCBDAE82 /* Pods-LocalReads.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.debug.xcconfig"; sourceTree = "<group>"; };
 		DE09F6781E5864FC003DBC7C /* LocalReads.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocalReads.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,6 +66,11 @@
 		DE09F6941E586CA2003DBC7C /* Library.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		DE09F6971E586CED003DBC7C /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
+		DE09F69D1E58B424003DBC7C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
+		DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LibraryFilterViewController.swift; sourceTree = "<group>"; };
+		DED375E71E59FB02006A3F0B /* ColorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocalReads.release.xcconfig"; path = "Pods/Target Support Files/Pods-LocalReads/Pods-LocalReads.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,10 +118,13 @@
 			children = (
 				DE09F6931E586C78003DBC7C /* Model */,
 				DE09F6991E586CF3003DBC7C /* Managers */,
+				DE09F6A11E58BF66003DBC7C /* Views/Cells */,
 				DE09F6961E586CAC003DBC7C /* View Controllers */,
 				DE09F69C1E588442003DBC7C /* Utilities/Extensions */,
 				DE09F67F1E5864FC003DBC7C /* Main.storyboard */,
+				066CCDDC1E58A8D700D51267 /* FlowChart.storyboard */,
 				DE09F67B1E5864FC003DBC7C /* AppDelegate.swift */,
+				06B239701E5C9F660071E17F /* giphy.gif */,
 				DE09F6821E5864FC003DBC7C /* Assets.xcassets */,
 				DE09F6841E5864FC003DBC7C /* LaunchScreen.storyboard */,
 				DE09F68D1E586728003DBC7C /* GoogleService-Info.plist */,
@@ -102,6 +139,7 @@
 				DE09F68F1E586C5E003DBC7C /* Book.swift */,
 				DE09F6911E586C71003DBC7C /* User.swift */,
 				DE09F6941E586CA2003DBC7C /* Library.swift */,
+				DE09F69D1E58B424003DBC7C /* Post.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -109,7 +147,14 @@
 		DE09F6961E586CAC003DBC7C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				06B239721E5CA1840071E17F /* LaunchViewController.swift */,
 				DE09F67D1E5864FC003DBC7C /* ViewController.swift */,
+				066CCDDE1E58A9CA00D51267 /* LoginViewController.swift */,
+				066CCDE61E58D02C00D51267 /* RegisterNewUserViewController.swift */,
+				066CCDE21E58B3C400D51267 /* FeedViewController.swift */,
+				DE09F6A61E58EBEA003DBC7C /* LibraryFilterViewController.swift */,
+				066CCDE41E58B3DE00D51267 /* AddPostViewController.swift */,
+				066CCDE01E58B3B500D51267 /* ProfileViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -118,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				DE09F6971E586CED003DBC7C /* APIManager.swift */,
+				DED375E71E59FB02006A3F0B /* ColorManager.swift */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -126,8 +172,21 @@
 			isa = PBXGroup;
 			children = (
 				DE09F69A1E58843C003DBC7C /* Extension+UIColor.swift */,
+				06B239741E5CA71D0071E17F /* UIImage+Gif.swift */,
 			);
 			name = Utilities/Extensions;
+			sourceTree = "<group>";
+		};
+		DE09F6A11E58BF66003DBC7C /* Views/Cells */ = {
+			isa = PBXGroup;
+			children = (
+				DE09F6A21E58C0A6003DBC7C /* PostTableViewCell.swift */,
+				DE09F6A31E58C0A6003DBC7C /* PostTableViewCell.xib */,
+				3E287A921E58BE6900512F41 /* BookCollectionViewCell.swift */,
+				3E287A961E58DAD400512F41 /* BookCollectionViewCell.xib */,
+				3E287A981E5922C500512F41 /* SwiftyStarRatingView.swift */,
+			);
+			name = Views/Cells;
 			sourceTree = "<group>";
 		};
 		E6775B9C786B405DD10DCF57 /* Frameworks */ = {
@@ -200,9 +259,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				066CCDDD1E58A8D700D51267 /* FlowChart.storyboard in Resources */,
+				3E287A971E58DAD400512F41 /* BookCollectionViewCell.xib in Resources */,
 				DE09F6861E5864FC003DBC7C /* LaunchScreen.storyboard in Resources */,
 				DE09F68E1E586728003DBC7C /* GoogleService-Info.plist in Resources */,
+				DE09F6A51E58C0A6003DBC7C /* PostTableViewCell.xib in Resources */,
 				DE09F6831E5864FC003DBC7C /* Assets.xcassets in Resources */,
+				06B239711E5C9F660071E17F /* giphy.gif in Resources */,
 				DE09F6811E5864FC003DBC7C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -263,11 +326,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				DE09F6981E586CED003DBC7C /* APIManager.swift in Sources */,
+				3E287A941E58BE6900512F41 /* BookCollectionViewCell.swift in Sources */,
 				DE09F6921E586C71003DBC7C /* User.swift in Sources */,
+				DE09F6A41E58C0A6003DBC7C /* PostTableViewCell.swift in Sources */,
+				066CCDE31E58B3C400D51267 /* FeedViewController.swift in Sources */,
+				3E287A991E5922C500512F41 /* SwiftyStarRatingView.swift in Sources */,
+				066CCDE71E58D02C00D51267 /* RegisterNewUserViewController.swift in Sources */,
 				DE09F69B1E58843C003DBC7C /* Extension+UIColor.swift in Sources */,
+				DE09F6A71E58EBEA003DBC7C /* LibraryFilterViewController.swift in Sources */,
+				DE09F69E1E58B424003DBC7C /* Post.swift in Sources */,
 				DE09F67E1E5864FC003DBC7C /* ViewController.swift in Sources */,
+				066CCDDF1E58A9CA00D51267 /* LoginViewController.swift in Sources */,
 				DE09F6951E586CA2003DBC7C /* Library.swift in Sources */,
+				06B239731E5CA1840071E17F /* LaunchViewController.swift in Sources */,
+				066CCDE11E58B3B500D51267 /* ProfileViewController.swift in Sources */,
 				DE09F67C1E5864FC003DBC7C /* AppDelegate.swift in Sources */,
+				DED375E81E59FB02006A3F0B /* ColorManager.swift in Sources */,
+				066CCDE51E58B3DE00D51267 /* AddPostViewController.swift in Sources */,
+				06B239751E5CA71D0071E17F /* UIImage+Gif.swift in Sources */,
 				DE09F6901E586C5E003DBC7C /* Book.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,6 +468,7 @@
 			baseConfigurationReference = B6E76D9E92A280FDBCBDAE82 /* Pods-LocalReads.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LocalReads/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.c4q.TMT.LocalReads;
@@ -405,6 +482,7 @@
 			baseConfigurationReference = FC37C20D7EA010F4A10C6215 /* Pods-LocalReads.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = LocalReads/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nyc.c4q.TMT.LocalReads;

@@ -10,6 +10,5 @@ target 'LocalReads' do
   pod 'Firebase/Database'
   pod 'Firebase/Storage'
   pod 'SnapKit'
-
-
+  pod 'Cosmos'
 end
