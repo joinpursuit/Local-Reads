@@ -47,24 +47,15 @@ class LoginViewController: UIViewController {
     }
     
     override func viewDidLayoutSubviews() {
-        let border1 = CALayer()
         let width = CGFloat(2.0)
-        border1.borderColor = ColorManager.shared.primaryDark.cgColor
-        border1.frame = CGRect(x: 0, y: emailTextField.frame.size.height - width, width:  emailTextField.frame.size.width, height: emailTextField.frame.size.height)
-        border1.borderWidth = width
-        emailTextField.layer.addSublayer(border1)
         
-        let border2 = CALayer()
-        border2.borderColor = ColorManager.shared.primaryDark.cgColor
-        border2.frame = CGRect(x: 0, y: passwordTextField.frame.size.height - width, width:  passwordTextField.frame.size.width, height: passwordTextField.frame.size.height)
-        border2.borderWidth = width
-        passwordTextField.layer.addSublayer(border2)
-        
-        let border3 = CALayer()
-        border3.borderColor = ColorManager.shared.primaryDark.cgColor
-        border3.frame = CGRect(x: 0, y: nameTextField.frame.size.height - width, width:  nameTextField.frame.size.width, height: nameTextField.frame.size.height)
-        border3.borderWidth = width
-        nameTextField.layer.addSublayer(border3)
+        let _ = [emailTextField, passwordTextField, nameTextField].map { current in
+            let border = CALayer()
+            border.borderColor = ColorManager.shared.primaryDark.cgColor
+            border.frame = CGRect(x: 0, y: current.frame.size.height - width, width:  current.frame.size.width, height: current.frame.size.height)
+            border.borderWidth = width
+            current.layer.addSublayer(border)
+        }
     }
     
     func setupViewHierarchy(){
@@ -388,7 +379,7 @@ class LoginViewController: UIViewController {
         let view = UISegmentedControl()
         view.insertSegment(withTitle: "Log in", at: 0, animated: true)
         view.insertSegment(withTitle: "Register", at: 1, animated: true)
-        view.tintColor = .white
+        view.tintColor = ColorManager.shared.accent
         view.selectedSegmentIndex = 0
         view.addTarget(self, action: #selector(switchForm), for: .valueChanged)
         return view
@@ -397,6 +388,7 @@ class LoginViewController: UIViewController {
     lazy var emailTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Email"
+        field.textColor = .white
         field.font = UIFont.systemFont(ofSize: 18)
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
@@ -407,6 +399,7 @@ class LoginViewController: UIViewController {
     lazy var nameTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Your name"
+        field.textColor = .white
         field.font = UIFont.systemFont(ofSize: 18)
         field.autocorrectionType = .no
         field.layer.masksToBounds = true
@@ -417,6 +410,7 @@ class LoginViewController: UIViewController {
     lazy var passwordTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Password"
+        field.textColor = .white
         field.font = UIFont.systemFont(ofSize: 18)
         field.isSecureTextEntry = true
         field.autocorrectionType = .no
@@ -428,11 +422,11 @@ class LoginViewController: UIViewController {
     lazy var logAndRegButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitleColor(ColorManager.shared.accent, for: .normal)
         button.setTitle("Log in", for: .normal)
         button.layer.borderWidth = 2.0
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderColor = ColorManager.shared.accent.cgColor
         button.addTarget(self, action: #selector(iamTapped), for: .touchUpInside)
         return button
     }()
