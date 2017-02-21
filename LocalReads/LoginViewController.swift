@@ -15,16 +15,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
     static var currentUser: User!
     var loadingViews: [UIView] = []
     let animator = UIViewPropertyAnimator(duration: 0.6, curve: .easeIn, animations: nil)
+    var randomImage: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        emailTextField.text = "vinny@vinny.com"
-        passwordTextField.text = "foobar123"
-        
         UIApplication.shared.isStatusBarHidden = false
         setupViewHierarchy()
         configureConstraints()
+        
+        self.getRandomImage { (image) in
+            if let validImage = image{
+                self.randomImage = validImage
+            }
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,9 +110,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
                     view.centerX.equalToSuperview()
                 }
                 
-                self.emailTextField.text = "demo@hahaha.com"
-                self.passwordTextField.text = "000000"
-                
                 self.containerView.layoutIfNeeded()
             }
         }else{
@@ -161,15 +162,10 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
                         if user != nil {
                             // create a new user with the UID
                             // on completion, segue to profile screen
-                            
-                            self.getRandomImage(completion: { (image) in
-                                if let validImage = image{
-                                    User.updateUserProfileImage(uid: (user?.uid)!, image: validImage, completion: { (error) in
-                                        //error checking
-                                        if error != nil{
-                                            print(error!.localizedDescription)
-                                        }
-                                    })
+                            User.updateUserProfileImage(uid: (user?.uid)!, image: self.randomImage, completion: { (error) in
+                                //error checking
+                                if error != nil{
+                                    print(error!.localizedDescription)
                                 }
                             })
                             
@@ -237,7 +233,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
         tabView.tabBar.tintColor = ColorManager.shared.accent
 
         tabView.viewControllers = [feedViewController, profileViewController]
-        tabView.selectedIndex = 0
+        tabView.selectedIndex = self.modeSwitch.selectedSegmentIndex
         self.present(tabView, animated: true, completion: nil)
         
     }
