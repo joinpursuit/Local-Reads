@@ -145,6 +145,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     
     func didTapUpload() {
+        
+        guard LoginViewController.currentUser.currentLibrary != "" else {
+            let alert = UIAlertController(title: "No Library", message: "Please Pick A Library In Your Profile Page", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         guard selectedBook != nil else {
             let alert = UIAlertController(title: "Oh No", message: "Pick A Book", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -332,7 +341,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     lazy var commentSection: UITextView = {
         let view = UITextView()
-        view.font = UIFont(name: "Times New Roman", size: 20.0)
+        view.font = UIFont.systemFont(ofSize: 16)
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.gray.cgColor
         return view
