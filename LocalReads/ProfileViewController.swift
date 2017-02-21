@@ -12,6 +12,11 @@ import FirebaseDatabase
 import FirebaseAuth
 import FirebaseStorage
 
+enum ProfileViewType {
+    case admin
+    case vistor
+}
+
 class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var databaseReference: FIRDatabaseReference!
@@ -20,11 +25,17 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     static var chosenLibrary: Library?
     
+    var viewType: ProfileViewType = .admin
+    var profileUserID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = ColorManager.shared.primary
         self.databaseReference = FIRDatabase.database().reference().child("posts")
+        
+        if profileUserID == nil {
+            profileUserID = (FIRAuth.auth()?.currentUser?.uid)!
+        }
+        
         setNavBar()
         setupViews()
         setConstraints()
@@ -36,6 +47,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         fetchPosts()
         
         if let library = ProfileViewController.chosenLibrary {
+            self.userLibraryLabel.text = "Library: \(library.name)"
             // save libraray to use
             User.updateUserLibrary(library: library, completion: { 
                 print("SUCCESS, updated userLibrary")
@@ -46,14 +58,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     func setNavBar() {
         self.navigationController?.navigationBar.tintColor = ColorManager.shared.accent
-
-        let libraryButton = UIBarButtonItem(title: "Choose Library", style: .done, target: self, action: #selector(chooseLibraryTapped))
-        
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
-        
-        self.navigationItem.rightBarButtonItem = libraryButton
-        self.navigationItem.leftBarButtonItem = logoutButton
-        
+        if viewType == .admin {
+            let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
+            self.navigationItem.rightBarButtonItem = logoutButton
+        } else {
+            let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+            self.navigationItem.backBarButtonItem = backButton
+        }
     }
 
     
@@ -65,41 +76,84 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = ColorManager.shared.primaryLight
 
-        self.view.addSubview(profileImageView)
-
         self.view.addSubview(tableView)
+        self.view.addSubview(bannerView)
+        bannerView.addSubview(profileImageView)
+        bannerView.addSubview(userNameLabel)
+        bannerView.addSubview(userLibraryLabel)
+        bannerView.addSubview(userNumberOfPostsLabel)
+        bannerView.addSubview(changeLibraryLabel)
+
+        
+        if self.viewType == .vistor {
+            self.profileImageView.isUserInteractionEnabled = false
+            self.changeLibraryLabel.isHidden = true
+        }
     }
     
     func setConstraints() {
         self.edgesForExtendedLayout = []
         
+        self.bannerView.snp.makeConstraints { (view) in
+            view.leading.trailing.top.equalToSuperview()
+            view.height.equalToSuperview().multipliedBy(0.28)
+        }
+        
         self.profileImageView.snp.makeConstraints { (view) in
             view.top.equalToSuperview().offset(8)
-            view.height.equalToSuperview().multipliedBy(0.3)
+            view.bottom.equalToSuperview().offset(-8)
             view.width.equalTo(self.profileImageView.snp.height)
-            view.centerX.equalToSuperview()
+            view.leading.equalToSuperview().offset(40)
+        }
+        
+        self.userNameLabel.snp.makeConstraints { (view) in
+            view.bottom.equalTo(self.profileImageView.snp.centerY).offset(-20)
+            view.leading.equalTo(self.profileImageView.snp.trailing).offset(8)
+            view.trailing.equalToSuperview().offset(-8)
+        }
+        
+        self.userNumberOfPostsLabel.snp.makeConstraints { (view) in
+            view.top.equalTo(userNameLabel.snp.bottom).offset(8)
+            view.leading.equalTo(self.profileImageView.snp.trailing).offset(8)
+            view.trailing.equalToSuperview().offset(-8)
+        }
+        
+        self.userLibraryLabel.snp.makeConstraints { (view) in
+            view.top.equalTo(userNumberOfPostsLabel.snp.bottom).offset(8)
+            view.leading.equalTo(self.profileImageView.snp.trailing).offset(8)
+            view.trailing.equalToSuperview().offset(-8)
+        }
+        
+        self.changeLibraryLabel.snp.makeConstraints { (view) in
+            view.trailing.equalTo(self.userLibraryLabel.snp.trailing)
+            view.top.equalTo(self.userLibraryLabel.snp.bottom).offset(4)
         }
 
         
         self.tableView.snp.makeConstraints { (view) in
             view.bottom.leading.trailing.equalToSuperview()
-            view.top.equalTo(profileImageView.snp.bottom).offset(8)
+            view.top.equalTo(bannerView.snp.bottom)
         }
     }
     
     
+    
     func getUser() {
-        let userReference = FIRDatabase.database().reference().child("users/\(FIRAuth.auth()!.currentUser!.uid)")
+        let userReference = FIRDatabase.database().reference().child("users/\(profileUserID!)")
         userReference.observeSingleEvent(of: .value, with: { (snapshot) in
             if let userDict = snapshot.value as? [String: Any],
-                let userName = userDict["name"] as? String {
+                let userName = userDict["name"] as? String,
+                let library = userDict["currentLibrary"] as? String {
+                
                 self.navigationItem.title = userName
+                self.userNameLabel.text = userName
+                self.userLibraryLabel.text = "Library: \(library)"
             }
         })
         
         //get image
         let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
-        let spaceRef = storageReference.child("profileImages/\(FIRAuth.auth()!.currentUser!.uid)")
+        let spaceRef = storageReference.child("profileImages/\(profileUserID!)")
         
         spaceRef.data(withMaxSize: 1 * 1024 * 1024) { data, error in
             if let error = error {
@@ -126,7 +180,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     }
     
-
+    
     
     // MARK: - Posts
     
@@ -142,8 +196,9 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
             // chronological order
-            self.userPosts = fetchedPosts.filter{ $0.userName == LoginViewController.currentUser.name }.reversed()
+            self.userPosts = fetchedPosts.filter{ $0.userID == self.profileUserID }.reversed()
             self.tableView.reloadData()
+            self.userNumberOfPostsLabel.text = "\(self.userPosts.count) posts"
         })
     }
 
@@ -237,7 +292,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         view.image = #imageLiteral(resourceName: "user_icon")
         view.backgroundColor = ColorManager.shared.primaryLight
         view.clipsToBounds = true
-        view.layer.cornerRadius = 88
+        view.layer.cornerRadius = 70
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(tapGestureRecognizer)
@@ -248,5 +303,51 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         let view = UITableView()
         return view
     }()
+    
+    lazy var bannerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = ColorManager.shared.primary
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.8
+        view.layer.shadowOffset = CGSize(width: 0, height: 5)
+        view.layer.shadowRadius = 8
+
+        return view
+    }()
+    
+    lazy var userNameLabel: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 18, weight: 14)
+        view.textColor = .white
+        return view
+    }()
+    
+    lazy var userLibraryLabel: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 14)
+        view.textColor = .white
+        return view
+    }()
+    
+    lazy var userNumberOfPostsLabel: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 16)
+        view.textColor = .white
+        return view
+    }()
+    
+    lazy var changeLibraryLabel: UILabel = {
+        let view = UILabel()
+        view.font = UIFont.systemFont(ofSize: 12)
+        view.textColor = ColorManager.shared.accent
+        view.text = "Change Library?"
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(chooseLibraryTapped))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tapGestureRecognizer)
+        return view
+    }()
+
+    
+    
 
 }
