@@ -13,6 +13,8 @@ import Firebase
 class LoginViewController: UIViewController {
     
     static var currentUser: User!
+    var loadingViews: [UIView] = []
+    let animator = UIViewPropertyAnimator(duration: 0.6, curve: .easeIn, animations: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +27,7 @@ class LoginViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        let animator = UIViewPropertyAnimator(duration: 0.8, curve: .easeIn, animations: nil)
-        
         logoImageView.alpha = 0.3
-        logoImageView.snp.removeConstraints()
         logoImageView.snp.remakeConstraints { (view) in
             view.size.equalTo(CGSize(width: 200, height: 150))
             view.centerX.equalToSuperview()
@@ -41,6 +40,10 @@ class LoginViewController: UIViewController {
         }
         
         animator.startAnimation()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.removeAllDot()
     }
     
     override func viewDidLayoutSubviews() {
@@ -69,7 +72,7 @@ class LoginViewController: UIViewController {
         self.edgesForExtendedLayout = UIRectEdge(rawValue: 0)
         
         nameTextField.isHidden = true
-        
+        loadingContainer.isHidden = true
         self.view.addSubview(BGImageView)
         self.view.addSubview(containerView)
         containerView.addSubview(filterView)
@@ -81,6 +84,7 @@ class LoginViewController: UIViewController {
         containerView.addSubview(logAndRegButton)
         containerView.addSubview(resetPasswordButton)
         self.view.addSubview(memoLabel)
+        self.view.addSubview(loadingContainer)
         
     }
     
@@ -147,43 +151,45 @@ class LoginViewController: UIViewController {
     
     func iamTapped(){
         print("Log in")
+        //Preloading animation start here
         animateButton(sender: logAndRegButton)
-        
-        switch modeSwitch.selectedSegmentIndex {
-        case 0:
-            if let username = emailTextField.text,
-                let password = passwordTextField.text{
-                loginCurrentUser(username: username, password: password)
-            }
-        default:
-            if let email = emailTextField.text, let name = nameTextField.text, let password = passwordTextField.text {
-                FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error: Error?) in
-                    if error != nil {
-                        print("error with completion while creating new Authentication: \(error!)")
-                    }
-                    if user != nil {
-                        // create a new user with the UID
-                        // on completion, segue to profile screen
-                        
-                        self.getRandomImage(completion: { (image) in
-                            if let validImage = image{
-                                User.updateUserProfileImage(uid: (user?.uid)!, image: validImage, completion: { (error) in
-                                    //error checking
-                                    if error != nil{
-                                        print(error!.localizedDescription)
-                                    }
-                                })
-                            }
-                        })
-                        
-                        User.createUserInDatabase(email: email, name: name, profileImage: (user?.uid)!, currentLibrary: "", completion: {
-                            self.loginCurrentUser(username: email, password: password)
-                        })
-                        
-                    } else {
-                        self.showOKAlert(title: "Error", message: error?.localizedDescription)
-                    }
-                })
+        preloadAnimator {
+            switch self.modeSwitch.selectedSegmentIndex {
+            case 0:
+                if let username = self.emailTextField.text,
+                    let password = self.passwordTextField.text{
+                    self.loginCurrentUser(username: username, password: password)
+                }
+            default:
+                if let email = self.emailTextField.text, let name = self.nameTextField.text, let password = self.passwordTextField.text {
+                    FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user: FIRUser?, error: Error?) in
+                        if error != nil {
+                            print("error with completion while creating new Authentication: \(error!)")
+                        }
+                        if user != nil {
+                            // create a new user with the UID
+                            // on completion, segue to profile screen
+                            
+                            self.getRandomImage(completion: { (image) in
+                                if let validImage = image{
+                                    User.updateUserProfileImage(uid: (user?.uid)!, image: validImage, completion: { (error) in
+                                        //error checking
+                                        if error != nil{
+                                            print(error!.localizedDescription)
+                                        }
+                                    })
+                                }
+                            })
+                            
+                            User.createUserInDatabase(email: email, name: name, profileImage: (user?.uid)!, currentLibrary: "", completion: {
+                                self.loginCurrentUser(username: email, password: password)
+                            })
+                            
+                        } else {
+                            self.showOKAlert(title: "Error", message: error?.localizedDescription)
+                        }
+                    })
+                }
             }
         }
     }
@@ -306,10 +312,16 @@ class LoginViewController: UIViewController {
             view.top.equalTo(BGImageView.snp.bottom)
             view.bottom.equalToSuperview()
         }
+        
+        loadingContainer.snp.makeConstraints { (view) in
+            view.center.equalToSuperview()
+            view.height.width.equalToSuperview().multipliedBy(0)
+        }
     }
     
     //MARK: - Helper func
     internal func showOKAlert(title: String, message: String?, completion: (() -> Void)? = nil) {
+        self.removeAllDot()
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         alert.addAction(ok)
@@ -446,5 +458,96 @@ class LoginViewController: UIViewController {
         label.layer.shadowRadius = 5
         return label
     }()
+    
+    lazy var loadingContainer: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.alpha = 0.3
+        return view
+    }()
 }
+
+extension LoginViewController{
+    //preloading animation
+    
+    func preloadAnimator(completion: @escaping ()-> Void){
+        loadingContainer.isHidden = false
+        loadingContainer.snp.remakeConstraints { (view) in
+            view.center.equalToSuperview()
+            view.width.equalToSuperview()
+            view.height.equalToSuperview().multipliedBy(0.3)
+        }
+        
+        self.animator.addAnimations {
+            self.loadingViews = []
+            let sizeArr: [CGFloat] = [20, 17, 14, 11, 8]
+            let colorArr = ColorManager.shared.colorArray
+            for index in 0..<sizeArr.count{
+                DispatchQueue.main.asyncAfter(deadline: .now()+Double(index)/6, execute: {
+                    self.addAnimateLayer(size: sizeArr[index], dotColor: colorArr[6+index])
+                })
+            }
+            self.view.layoutIfNeeded()
+        }
+        
+        self.animator.addCompletion { (_) in
+            DispatchQueue.main.asyncAfter(deadline: .now()+1, execute: {
+                completion()
+            })
+        }
+        
+        animator.startAnimation()
+    }
+    
+    func addAnimateLayer(size: CGFloat, dotColor: UIColor){
+        self.loadingViews.append(self.viewWithCircle(size: size, dotColor: dotColor))
+        
+        self.view.addSubview(self.loadingViews.last!)
+        self.loadingViews.last?.snp.makeConstraints({ (view) in
+            view.center.equalToSuperview()
+            view.size.equalTo(CGSize(width: 100, height: 100))
+        })
+        self.view.layoutIfNeeded()
+        
+        let animate = CABasicAnimation(keyPath: "transform.rotation")
+        animate.duration = 1.5
+        animate.repeatCount = 1
+        animate.fromValue = 0.0
+        animate.toValue = Float(Float.pi * 2.0)
+        self.loadingViews.last?.layer.add(animate, forKey: nil)
+        
+    }
+    
+    func viewWithCircle(size: CGFloat, dotColor: UIColor) -> UIView{
+        let dot = UIView()
+        dot.layer.cornerRadius = size/2
+        dot.backgroundColor = dotColor
+        
+        let myView = UIView()
+        myView.layer.cornerRadius = 50
+        myView.backgroundColor = .clear
+        myView.addSubview(dot)
+        dot.snp.makeConstraints { (view) in
+            view.top.centerX.equalToSuperview()
+            view.size.equalTo(CGSize(width: size, height: size))
+        }
+        
+        return myView
+    }
+    
+    func removeAllDot(){
+        loadingContainer.isHidden = true
+        loadingContainer.snp.remakeConstraints { (view) in
+            view.center.equalToSuperview()
+            view.height.width.equalToSuperview().multipliedBy(0)
+        }
+        
+        let _ = loadingViews.map{ $0.removeFromSuperview()}
+    }
+    
+}
+
+
+
+
 
