@@ -14,14 +14,28 @@ import FirebaseStorage
 
 class FeedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var posts: [Post] = []
+    var allPosts: [Post] = [] {
+        didSet {
+            if let library = FeedViewController.libraryToFilterBy {
+                self.filteredPosts = allPosts.filter { $0.libraryName == library.name }
+                navigationItem.title = library.name
+            } else {
+                self.filteredPosts = allPosts
+                navigationItem.title = "All Queens Libraries"
+            }
+        }
+    }
+    
+    var filteredPosts: [Post] = [] {
+        didSet {
+            self.tableView.reloadData()
+        }
+    }
     
     static var libraryToFilterBy: Library?
     
     var databaseReference: FIRDatabaseReference!
     
-    var resultsTitle = "All Queens Libraries"
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.databaseReference = FIRDatabase.database().reference().child("posts")
@@ -29,12 +43,16 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         setNavBar()
         setupViews()
         setConstraints()
-        fetchPosts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchPosts()
+        if let library = FeedViewController.libraryToFilterBy {
+            navigationItem.title = library.name
+        } else {
+            
+        }
     }
     
     // MARK: - Setup
@@ -56,7 +74,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
         self.view.addSubview(floatingButton)
 
     }
@@ -78,7 +95,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     // MARK: - Posts 
     
     func fetchPosts() {
-        databaseReference.observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+        databaseReference.observe(.value, with: { (snapshot) in
             var fetchedPosts: [Post] = []
             for child in snapshot.children {
                 if let snap = child as? FIRDataSnapshot, let valueDict = snap.value as? [String: AnyObject] {
@@ -88,14 +105,28 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
                     }
                 }
             }
-            // chronological order
-            if let library = FeedViewController.libraryToFilterBy {
-                self.posts = self.posts.filter { $0.libraryName == library.name }.reversed()
-            } else {
-                self.posts = fetchedPosts.reversed()
-            }
-            self.tableView.reloadData()
+            self.allPosts = fetchedPosts.reversed()
         })
+        
+//        databaseReference.observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+//            var fetchedPosts: [Post] = []
+//            for child in snapshot.children {
+//                if let snap = child as? FIRDataSnapshot, let valueDict = snap.value as? [String: AnyObject] {
+//                    
+//                    if let post = Post(from: valueDict, key: snap.key) {
+//                        fetchedPosts.append(post)
+//                    }
+//                }
+//            }
+//            // chronological order
+////            if let library = FeedViewController.libraryToFilterBy {
+////                self.posts = self.posts.filter { $0.libraryName == library.name }.reversed()
+////            } else {
+////                self.posts = fetchedPosts.reversed()
+////            }
+//            self.posts = fetchedPosts.reversed()
+//            self.tableView.reloadData()
+//        })
     }
     
     
@@ -103,15 +134,13 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
     //MARK: - Tableview delegates/datasource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
+        return filteredPosts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCellIdentifyer", for: indexPath) as! PostTableViewCell
         
-        let post = posts[indexPath.row]
-        
-        
+        let post = filteredPosts[indexPath.row]
         
         cell.usernameLabel.text = post.userName
         cell.bookTitileLabel.text = post.bookTitle
