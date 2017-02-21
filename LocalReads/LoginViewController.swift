@@ -162,15 +162,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
                         if user != nil {
                             // create a new user with the UID
                             // on completion, segue to profile screen
-                            User.updateUserProfileImage(uid: (user?.uid)!, image: self.randomImage, completion: { (error) in
-                                //error checking
-                                if error != nil{
-                                    print(error!.localizedDescription)
-                                }
-                            })
                             
                             User.createUserInDatabase(email: email, name: name, profileImage: (user?.uid)!, currentLibrary: "", completion: {
-                                self.loginCurrentUser(username: email, password: password)
+                                User.updateUserProfileImage(uid: (user?.uid)!, image: self.randomImage, completion: { (error) in
+                                    //error checking
+                                    if error != nil{
+                                        print(error!.localizedDescription)
+                                    }
+                                    self.loginCurrentUser(username: email, password: password)
+                                })
                             })
                             
                         } else {
