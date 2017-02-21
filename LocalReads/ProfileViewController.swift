@@ -167,12 +167,15 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 } else {
                     self.userLibraryLabel.text = "Please choose your library"
                 }
+                self.getUserImage()
             }
         })
-        
-        //get image
+    }
+    
+    func getUserImage() {
         let storageReference: FIRStorageReference = FIRStorage.storage().reference(forURL: "gs://localreads-8eb86.appspot.com/")
         let spaceRef = storageReference.child("profileImages/\(profileUserID!)")
+        
         
         spaceRef.data(withMaxSize: 1 * 1024 * 1024) { data, error in
             if let error = error {
@@ -180,11 +183,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 let image = UIImage(data: data!)
                 self.profileImageView.image = image
-                UIView.animate(withDuration: 0.2, animations: { 
-                    self.profileImageView.alpha = 1
-                    self.bannerView.setNeedsLayout()
-                })
             }
+            UIView.animate(withDuration: 0.2, animations: {
+                self.profileImageView.alpha = 1
+                self.bannerView.setNeedsLayout()
+            })
         }
     }
     
