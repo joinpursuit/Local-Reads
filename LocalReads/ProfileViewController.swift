@@ -30,6 +30,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = ColorManager.shared.primaryDark
         self.databaseReference = FIRDatabase.database().reference().child("posts")
         
         if profileUserID == nil {
@@ -61,6 +62,8 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if viewType == .admin {
             let logoutButton = UIBarButtonItem(title: "Logout", style: .done, target: self, action: #selector(logoutButtonTapped))
             self.navigationItem.rightBarButtonItem = logoutButton
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonPressed))
+
         } else {
             let backButton = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             self.navigationItem.backBarButtonItem = backButton
@@ -77,6 +80,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.backgroundColor = ColorManager.shared.primaryLight
 
         self.view.addSubview(tableView)
+        self.view.addSubview(noPostsLabel)
         self.view.addSubview(bannerView)
         bannerView.addSubview(profileImageView)
         bannerView.addSubview(userNameLabel)
@@ -88,6 +92,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         if self.viewType == .vistor {
             self.profileImageView.isUserInteractionEnabled = false
             self.changeLibraryLabel.isHidden = true
+        }
+        
+        if self.userPosts.isEmpty {
+            self.noPostsLabel.isHidden = false
         }
     }
     
@@ -134,6 +142,11 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             view.bottom.leading.trailing.equalToSuperview()
             view.top.equalTo(bannerView.snp.bottom)
         }
+        
+        self.noPostsLabel.snp.makeConstraints { (view) in
+            view.leading.trailing.bottom.equalToSuperview()
+            view.top.equalTo(self.bannerView.snp.bottom)
+        }
     }
     
     
@@ -161,6 +174,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             } else {
                 let image = UIImage(data: data!)
                 self.profileImageView.image = image
+                UIView.animate(withDuration: 0.2, animations: { 
+                    self.profileImageView.alpha = 1
+                    self.bannerView.setNeedsLayout()
+                })
             }
         }
     }
@@ -198,7 +215,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             // chronological order
             self.userPosts = fetchedPosts.filter{ $0.userID == self.profileUserID }.reversed()
             self.tableView.reloadData()
-            self.userNumberOfPostsLabel.text = "\(self.userPosts.count) posts"
+            self.userNumberOfPostsLabel.text = "Posts: \(self.userPosts.count)"
+            if !self.userPosts.isEmpty {
+                self.noPostsLabel.isHidden = true
+            }
         })
     }
 
@@ -238,6 +258,33 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = ColorManager.shared.primaryDark
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+            let postID = userPosts[indexPath.row].key
+            databaseReference.child(postID).removeValue()
+            
+            userPosts.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .right)
+            self.userNumberOfPostsLabel.text = "Posts: \(self.userPosts.count)"
+            if userPosts.isEmpty {
+                self.noPostsLabel.alpha = 0
+                self.noPostsLabel.isHidden = false
+                UIView.animate(withDuration: 0.2, delay: 0.2, options: [], animations: { 
+                    self.noPostsLabel.alpha = 1.0
+                    self.view.setNeedsLayout()
+                }, completion: nil)
+            }
+        }
     }
     
     //MARK: - ImagePickerController Delegate Method
@@ -283,15 +330,26 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
     
+    func editButtonPressed() {
+        tableView.setEditing(true, animated: true)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonPressed))
+    }
+    
+    func doneButtonPressed() {
+        tableView.setEditing(false, animated: true)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editButtonPressed))
+    }
+
+    
 
    
     // MARK: - Lazy vars
     
     lazy var profileImageView: UIImageView = {
         let view = UIImageView()
-        view.image = #imageLiteral(resourceName: "user_icon")
         view.backgroundColor = ColorManager.shared.primaryLight
         view.clipsToBounds = true
+        view.alpha = 0
         view.layer.cornerRadius = 70
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action:#selector(profileImageTapped))
         view.isUserInteractionEnabled = true
@@ -347,6 +405,16 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         return view
     }()
 
+    lazy var noPostsLabel: UILabel = {
+        let view = UILabel()
+        view.text = "No posts to display\nAdd a post from the main feed"
+        view.numberOfLines = 2
+        view.backgroundColor = ColorManager.shared.primary
+        view.textColor = .white
+        view.textAlignment = .center
+        view.isHidden = true
+        return view
+    }()
     
     
 
