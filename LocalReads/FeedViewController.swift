@@ -164,7 +164,6 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         profileVC.profileUserID = post.userID
         navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         navigationController?.pushViewController(profileVC, animated: true)
-        
     }
     
     
