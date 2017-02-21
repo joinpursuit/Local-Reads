@@ -145,6 +145,15 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     
     func didTapUpload() {
+        
+        guard LoginViewController.currentUser.currentLibrary != "" else {
+            let alert = UIAlertController(title: "No Library", message: "Please Pick A Library In Your Profile Page", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alert.addAction(ok)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         guard selectedBook != nil else {
             let alert = UIAlertController(title: "Oh No", message: "Pick A Book", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .cancel, handler: nil)
