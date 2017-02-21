@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Firebase
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate{
     
     static var currentUser: User!
     var loadingViews: [UIView] = []
@@ -250,7 +250,7 @@ class LoginViewController: UIViewController {
         
         containerView.snp.makeConstraints { (view) in
             view.centerX.equalToSuperview()
-            view.centerY.equalToSuperview().offset(30)
+            view.centerY.equalToSuperview().offset(10)
             view.height.equalToSuperview().multipliedBy(0.55)
             view.width.equalToSuperview().multipliedBy(0.8)
         }
@@ -343,6 +343,13 @@ class LoginViewController: UIViewController {
         })
     }
     
+    //MARK: - Text Field Delegate
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        iamTapped()
+        return true
+    }
+    
     //MARK: - Lazy Inits
     lazy var BGImageView: UIImageView = {
         let view = UIImageView()
@@ -417,6 +424,7 @@ class LoginViewController: UIViewController {
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
         field.layer.masksToBounds = true
+        field.delegate = self
         return field
     }()
     
@@ -506,7 +514,7 @@ extension LoginViewController{
         
         let animate = CABasicAnimation(keyPath: "transform.rotation")
         animate.duration = 1.5
-        animate.repeatCount = 1
+        animate.repeatCount = Float.infinity
         animate.fromValue = 0.0
         animate.toValue = Float(Float.pi * 2.0)
         self.loadingViews.last?.layer.add(animate, forKey: nil)
