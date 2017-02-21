@@ -22,6 +22,7 @@ class LoginViewController: UIViewController {
         emailTextField.text = "vinny@vinny.com"
         passwordTextField.text = "foobar123"
         
+        UIApplication.shared.isStatusBarHidden = false
         setupViewHierarchy()
         configureConstraints()
     }
@@ -259,7 +260,7 @@ class LoginViewController: UIViewController {
         }
         
         logoImageView.snp.makeConstraints { (view) in
-            view.size.equalTo(CGSize(width: 50, height: 50))
+            view.size.equalTo(CGSize(width: 20, height: 20))
             view.centerX.equalToSuperview()
             view.centerY.equalTo(containerView.snp.top)
         }
