@@ -332,7 +332,7 @@ class AddPostViewController: UIViewController, UISearchBarDelegate,  UICollectio
     
     lazy var commentSection: UITextView = {
         let view = UITextView()
-        view.font = UIFont(name: "Times New Roman", size: 20.0)
+        view.font = UIFont.systemFont(ofSize: 16)
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor.gray.cgColor
         return view
