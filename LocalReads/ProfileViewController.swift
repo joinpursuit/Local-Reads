@@ -78,6 +78,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.backgroundColor = ColorManager.shared.primaryLight
+        self.tableView.separatorStyle = .none
 
         self.view.addSubview(tableView)
         self.view.addSubview(noPostsLabel)
@@ -261,7 +262,13 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        switch self.viewType {
+        case .admin:
+            return true
+        case .vistor:
+            return false
+    
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -269,7 +276,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if (editingStyle == UITableViewCellEditingStyle.delete) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) && self.viewType == .admin {
             let postID = userPosts[indexPath.row].key
             databaseReference.child(postID).removeValue()
             

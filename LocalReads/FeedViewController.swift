@@ -74,6 +74,7 @@ class FeedViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.tableView.dataSource = self
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.separatorStyle = .none
         self.view.addSubview(floatingButton)
 
     }
