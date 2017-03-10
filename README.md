@@ -4,7 +4,10 @@
 
 ## Introduction
 
-\[Local Reads\] is a 
+\[Local Reads\] aims to bring a social aspect back to your local library, allowing users to keep track of the books they’ve read and also allows them to share their thoughts with others.
+
+LocalReads will be able to display all the libraries in Queens and display the books people have read and posted from that library, allowing users to see what books people are reading in their local community.
+
 
 ## Screens
 
