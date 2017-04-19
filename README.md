@@ -1,6 +1,9 @@
 # Local Reads
 
 # By TMT
+* Tom Seymour - https://github.com/seymotom
+* Marcel Chaucer - https://github.com/marcel324
+* Tong Lin - https://github.com/TongLin91
 
 ## Introduction
 
@@ -54,4 +57,7 @@ User Authentication and storage is done through Firebase.
 * The profile page shows a table view of all the posts a user has made and by swiping left on one can be deleted.
 * The user can change their profile image by tapping on their profile image and can also change their default library by tapping on "change library" and selecting another library from the list.
 
+## Future Improvements and Features
 
+* Add functionality to comment on posts to help create a dialog around libraries/books.
+* Refactor legacy code 
