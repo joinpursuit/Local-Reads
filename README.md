@@ -4,6 +4,11 @@
 
 ## Introduction
 
+LocalReads is a simple social network based around local libraries allowing users to see what other members of their community are reading and allows them to share books they have read with ratings and comments. 
+ 
+Generating interest in local libraries, while allowing users to keep a log of the books they have read.
+
+
 \[Local Reads\] aims to bring a social aspect back to your local library, allowing users to keep track of the books they’ve read and also allows them to share their thoughts with others.
 
 LocalReads will be able to display all the libraries in Queens and display the books people have read and posted from that library, allowing users to see what books people are reading in their local community.
