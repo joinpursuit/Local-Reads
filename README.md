@@ -29,7 +29,7 @@ We aim to generate interest in local libraries, while allowing users to keep a l
 Users login or register. 
 User Authentication and storage is done through Firebase.
 
-### Main Feed
+### Main Feed (First Tab) 
 
 <img width="308" alt="screen shot 2017-04-19 at 10 42 57" src="https://cloud.githubusercontent.com/assets/20875592/25186089/173ee506-24ed-11e7-93c5-54f2d1c6478d.png">
 
@@ -47,6 +47,11 @@ User Authentication and storage is done through Firebase.
 * The user can then select how many stars out of 5 they rate the book. The star rating interface is a 3rd party library called Cosmos. https://cocoapods.org/pods/Cosmos
 * After writing a comment, the user taps the checkmark button and the post info is uploaded to their history on firebase.
 
+### User Profile (Second Tab)
 
+<img width="307" alt="screen shot 2017-04-19 at 11 14 37" src="https://cloud.githubusercontent.com/assets/20875592/25187634/9a9f79ca-24f1-11e7-85f6-e54bdd010399.png">
+
+* The profile page shows a table view of all the posts a user has made and by swiping left on one can be deleted.
+* The user can change their profile image by tapping on their profile image and can also change their default library by tapping on "change library" and selecting another library from the list.
 
 
