@@ -19,7 +19,7 @@ We aim to generate interest in local libraries, while allowing users to keep a l
 
 ### Login
 
-![Login](images/Artboards/Login.png)
+<img width="313" alt="screen shot 2017-04-19 at 10 13 00" src="https://cloud.githubusercontent.com/assets/20875592/25185545/a119f13c-24eb-11e7-90c3-a073d885aa78.png">
 
 Users login or register. 
 User Authentication is done through Firebase.
