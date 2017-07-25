@@ -221,7 +221,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate{
     func successfullyLogin(){
         let feedViewController = UINavigationController(rootViewController: FeedViewController())
         let profileViewController = UINavigationController(rootViewController: ProfileViewController())
-        
+            
 
         let feedBarItem = UITabBarItem(title: "", image: UIImage(named: "gallery_icon"), selectedImage: nil)
         let profileBarItem = UITabBarItem(title: "", image: UIImage(named: "user_icon"), selectedImage: nil)

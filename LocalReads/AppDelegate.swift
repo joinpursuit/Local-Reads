@@ -39,7 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.backgroundColor = ColorManager.shared.primaryLight
         tabBarAppearance.barTintColor = ColorManager.shared.primaryLight
         
-        
     }
 
 
